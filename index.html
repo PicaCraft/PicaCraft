@@ -3,126 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yükleniyor...</title>
+    <title>PicadorCraft Yükleniyor...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Minecraft';
-            src: url('Minecraft.ttf') format('truetype');
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            background: #111;
+            background: #1a1a1a;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: white;
-            font-family: 'Minecraft', sans-serif;
             text-align: center;
-            position: relative;
             overflow: hidden;
         }
-
-        .background-animation {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(0, 255, 0, 0.2), transparent);
-            animation: fadeInOut 5s infinite alternate ease-in-out;
-        }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0.2; }
-            100% { opacity: 0.6; }
-        }
-
-        .loading-container {
+        .loader-container {
             position: relative;
-            width: 80%;
-            max-width: 400px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-            border: 2px solid #00ff00;
-            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.8);
         }
-
         .logo {
             font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-shadow: 0px 0px 10px rgba(0, 255, 0, 1);
+            text-shadow: 3px 3px 0px #00ff00;
+            animation: fadeIn 2s ease-in-out;
         }
-
         .loading-bar {
-            width: 100%;
-            height: 8px;
+            width: 300px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
             overflow: hidden;
-            border: 1px solid white;
         }
-
         .progress {
-            width: 0%;
+            width: 0;
             height: 100%;
-            background: linear-gradient(90deg, #00ff00, #007700);
-            transition: width 0.3s ease-in-out;
-        }
-
-        .loading-text {
-            font-size: 16px;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #00ff00;
-        }
-
-        .footer {
+            background: #00ff00;
             position: absolute;
-            bottom: 10px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
+            transition: width 10s linear;
         }
-
+        .footer {
+            font-size: 12px;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-
-    <div class="background-animation"></div>
-
-    <div class="loading-container">
+    <div class="loader-container">
         <div class="logo">PicadorCraft</div>
         <div class="loading-bar">
             <div class="progress"></div>
         </div>
-        <div class="loading-text">Yükleniyor... %0</div>
+        <div class="footer">DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a></div>
     </div>
-
-    <div class="footer">
-        DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a>
-    </div>
-
+    
     <script>
-        let progress = 0;
-        let interval = 10000 / 100;
-        let timer = setInterval(() => {
-            progress++;
-            document.querySelector('.progress').style.width = progress + "%";
-            document.querySelector('.loading-text').textContent = "Yükleniyor... %" + progress;
-            if (progress >= 100) {
-                clearInterval(timer);
-                setTimeout(() => {
-                    window.location.href = "oyun.html";
-                }, 500);
-            }
-        }, interval);
+        document.addEventListener("DOMContentLoaded", function() {
+            let progress = document.querySelector(".progress");
+            progress.style.width = "100%";
+            
+            setTimeout(() => {
+                window.location.href = "oyun.html";
+            }, 10000);
+        });
     </script>
-
 </body>
 </html>
