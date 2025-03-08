@@ -3,30 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gelişmiş Eaglercraft</title>
+    <title>PicadorCraft</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Orbitron', sans-serif;
         }
 
         body {
-            background: radial-gradient(circle, #000000, #0a0a0a, #141414);
+            background: linear-gradient(135deg, #000000, #0f0f0f, #1a1a1a);
             color: white;
             text-align: center;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
+            to { text-shadow: 0 0 20px rgba(0, 255, 0, 1); }
         }
 
         #container {
-            width: 900px;
-            height: 500px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 30px rgba(0, 255, 0, 0.8);
+            width: 950px;
+            height: 550px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 40px rgba(0, 255, 0, 0.9);
             overflow: hidden;
             background: black;
             margin: 50px auto;
             position: relative;
+            transition: transform 0.5s ease-in-out;
         }
 
         iframe {
@@ -44,30 +60,35 @@
         }
 
         button {
-            background: rgba(0, 255, 0, 0.7);
+            background: rgba(0, 255, 0, 0.8);
             border: none;
             color: black;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 16px;
             font-weight: bold;
             transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.9);
         }
 
         button:hover {
             background: rgba(0, 255, 0, 1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 1);
         }
 
         #shortcuts {
             margin-top: 50px;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.5);
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0px 0px 20px rgba(0, 255, 0, 0.7);
             border-radius: 10px;
             width: 80%;
             margin-left: auto;
             margin-right: auto;
             display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
         .shortcut {
@@ -79,7 +100,7 @@
 </head>
 <body>
 
-    <h1>Gelişmiş Eaglercraft</h1>
+    <h1>PicadorCraft</h1>
     <p>Kısayolları görmek için aşağı kaydır.</p>
 
     <div id="container">
@@ -87,7 +108,7 @@
             <button id="fullscreenBtn">Tam Ekran</button>
             <button id="exitFullscreenBtn">Tam Ekrandan Çık</button>
         </div>
-        <iframe id="gameFrame"></iframe>
+        <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/"></iframe>
     </div>
 
     <div id="shortcuts">
@@ -105,33 +126,18 @@
     </div>
 
     <script>
-        const encryptedURL = "ZmYyMzM1ZDFkYjAxZjYyNmY3NmNkYzIz"; 
-
-        function decryptURL(encrypted) {
-            let decoded = atob(encrypted); 
-            return decoded;
-        }
-
-        document.getElementById("gameFrame").src = decryptURL(encryptedURL);
-
         function toggleFullscreen() {
             let iframe = document.getElementById("gameFrame");
             if (!document.fullscreenElement) {
-                if (iframe.requestFullscreen) {
-                    iframe.requestFullscreen();
-                }
+                iframe.requestFullscreen();
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                document.exitFullscreen();
             }
         }
 
         document.getElementById("fullscreenBtn").addEventListener("click", toggleFullscreen);
         document.getElementById("exitFullscreenBtn").addEventListener("click", function() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+            document.exitFullscreen();
         });
 
         document.addEventListener("keydown", function(event) {
@@ -141,7 +147,7 @@
                         toggleFullscreen();
                         break;
                     case "2":
-                        if (document.exitFullscreen) document.exitFullscreen();
+                        document.exitFullscreen();
                         break;
                     case "3":
                         location.reload();
@@ -150,30 +156,32 @@
                         document.body.style.background = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
                         break;
                     case "5":
-                        document.getElementById("gameFrame").src = decryptURL(encryptedURL);
+                        document.getElementById("gameFrame").src = "https://eaglercraft.com/mc/1.8.8/";
                         break;
                     case "6":
                         document.body.style.color = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
                         break;
                     case "7":
-                        document.getElementById("container").style.boxShadow = `0px 0px 30px rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.8)`;
+                        document.getElementById("container").style.boxShadow = `0px 0px 40px rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.9)`;
                         break;
                     case "8":
                         let container = document.getElementById("container");
                         container.style.display = (container.style.display === "none") ? "block" : "none";
                         break;
                     case "9":
-                        console.log("Gizli Mesaj: Eaglercraft özel!");
+                        console.log("Gizli Mesaj: PicadorCraft özel!");
                         break;
                     case "0":
-                        alert("Sürpriz! Özel mesaj: Minecraft'ı seviyoruz!");
+                        alert("Sürpriz! PicadorCraft'ı seviyoruz!");
                         break;
                 }
             }
         });
 
         window.addEventListener("scroll", function() {
-            document.getElementById("shortcuts").style.display = "block";
+            let shortcuts = document.getElementById("shortcuts");
+            shortcuts.style.display = "block";
+            shortcuts.style.opacity = "1";
         });
 
     </script>
