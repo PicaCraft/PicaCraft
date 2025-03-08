@@ -19,6 +19,7 @@
             color: white;
             text-align: center;
             overflow-x: hidden;
+            height: 200vh; /* Sayfanın aşağı kaydırılabilir olmasını sağlar */
         }
 
         h1 {
@@ -77,7 +78,6 @@
             width: 80%;
             margin-left: auto;
             margin-right: auto;
-            display: none;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
@@ -99,7 +99,7 @@
             <button id="fullscreenBtn">Tam Ekran</button>
             <button id="exitFullscreenBtn">Tam Ek. Çık</button>
         </div>
-        <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/"></iframe>
+        <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
     <div id="shortcuts">
@@ -179,8 +179,18 @@
 
         window.addEventListener("scroll", function() {
             let shortcuts = document.getElementById("shortcuts");
-            shortcuts.style.display = "block";
             shortcuts.style.opacity = "1";
+        });
+
+        // WASD VE DİĞER TUŞLARIN EAGLERCRAFT TARAFINDAN ALGILANMASINI SAĞLA
+        document.addEventListener("keydown", function(event) {
+            let iframe = document.getElementById("gameFrame").contentWindow;
+            iframe.postMessage({ action: "keydown", key: event.key }, "*");
+        });
+
+        document.addEventListener("keyup", function(event) {
+            let iframe = document.getElementById("gameFrame").contentWindow;
+            iframe.postMessage({ action: "keyup", key: event.key }, "*");
         });
 
     </script>
