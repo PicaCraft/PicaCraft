@@ -15,7 +15,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #000000, #0f0f0f, #1a1a1a);
+            background: #000;
             color: white;
             text-align: center;
             overflow-x: hidden;
@@ -24,25 +24,18 @@
         h1 {
             font-size: 40px;
             margin: 20px 0;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
-            animation: glow 1.5s infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); }
-            to { text-shadow: 0 0 20px rgba(0, 255, 0, 1); }
+            text-shadow: 0 0 15px rgba(0, 255, 0, 1);
         }
 
         #container {
-            width: 950px;
-            height: 550px;
-            border-radius: 20px;
+            width: 900px;
+            height: 500px;
+            border-radius: 15px;
             box-shadow: 0px 0px 40px rgba(0, 255, 0, 0.9);
             overflow: hidden;
             background: black;
             margin: 50px auto;
             position: relative;
-            transition: transform 0.5s ease-in-out;
         }
 
         iframe {
@@ -63,18 +56,16 @@
             background: rgba(0, 255, 0, 0.8);
             border: none;
             color: black;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
             transition: 0.3s;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.9);
         }
 
         button:hover {
             background: rgba(0, 255, 0, 1);
-            box-shadow: 0 0 15px rgba(0, 255, 0, 1);
         }
 
         #shortcuts {
@@ -106,7 +97,7 @@
     <div id="container">
         <div id="controls">
             <button id="fullscreenBtn">Tam Ekran</button>
-            <button id="exitFullscreenBtn">Tam Ekrandan Çık</button>
+            <button id="exitFullscreenBtn">Tam Ek. Çık</button>
         </div>
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/"></iframe>
     </div>
@@ -115,17 +106,18 @@
         <h2>Kısayollar</h2>
         <p class="shortcut">CTRL + 1 → Tam ekrana geç</p>
         <p class="shortcut">CTRL + 2 → Tam ekrandan çık</p>
-        <p class="shortcut">CTRL + 3 → Sayfayı yenile</p>
-        <p class="shortcut">CTRL + 4 → Arka planı değiştir</p>
-        <p class="shortcut">CTRL + 5 → Iframe'i yenile</p>
-        <p class="shortcut">CTRL + 6 → Yazı rengini değiştir</p>
-        <p class="shortcut">CTRL + 7 → Çerçeve rengini değiştir</p>
-        <p class="shortcut">CTRL + 8 → Arayüzü gizle/göster</p>
-        <p class="shortcut">CTRL + 9 → Konsola gizli mesaj yazdır</p>
-        <p class="shortcut">CTRL + 0 → Sürpriz mesaj göster</p>
+        <p class="shortcut">CTRL + 3 → Oyunu yeniden başlat</p>
+        <p class="shortcut">CTRL + 4 → Oyunu duraklat</p>
+        <p class="shortcut">CTRL + 5 → Oyunu devam ettir</p>
+        <p class="shortcut">CTRL + 6 → Sesi aç/kapat</p>
+        <p class="shortcut">CTRL + 7 → Fareyi gizle/göster</p>
+        <p class="shortcut">CTRL + 8 → RGB Efekt Aç/Kapat</p>
     </div>
 
     <script>
+        let rgbActive = false;
+        let rgbInterval;
+
         function toggleFullscreen() {
             let iframe = document.getElementById("gameFrame");
             if (!document.fullscreenElement) {
@@ -142,6 +134,7 @@
 
         document.addEventListener("keydown", function(event) {
             if (event.ctrlKey) {
+                let iframe = document.getElementById("gameFrame").contentWindow;
                 switch (event.key) {
                     case "1":
                         toggleFullscreen();
@@ -150,33 +143,39 @@
                         document.exitFullscreen();
                         break;
                     case "3":
-                        location.reload();
+                        iframe.location.reload();
                         break;
                     case "4":
-                        document.body.style.background = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                        iframe.postMessage({ action: "pauseGame" }, "*");
                         break;
                     case "5":
-                        document.getElementById("gameFrame").src = "https://eaglercraft.com/mc/1.8.8/";
+                        iframe.postMessage({ action: "resumeGame" }, "*");
                         break;
                     case "6":
-                        document.body.style.color = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                        iframe.postMessage({ action: "toggleSound" }, "*");
                         break;
                     case "7":
-                        document.getElementById("container").style.boxShadow = `0px 0px 40px rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.9)`;
+                        iframe.postMessage({ action: "toggleCursor" }, "*");
                         break;
                     case "8":
-                        let container = document.getElementById("container");
-                        container.style.display = (container.style.display === "none") ? "block" : "none";
-                        break;
-                    case "9":
-                        console.log("Gizli Mesaj: PicadorCraft özel!");
-                        break;
-                    case "0":
-                        alert("Sürpriz! PicadorCraft'ı seviyoruz!");
+                        toggleRGB();
                         break;
                 }
             }
         });
+
+        function toggleRGB() {
+            if (rgbActive) {
+                clearInterval(rgbInterval);
+                document.body.style.background = "#000";
+                rgbActive = false;
+            } else {
+                rgbInterval = setInterval(() => {
+                    document.body.style.background = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                }, 500);
+                rgbActive = true;
+            }
+        }
 
         window.addEventListener("scroll", function() {
             let shortcuts = document.getElementById("shortcuts");
