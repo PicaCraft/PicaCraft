@@ -19,7 +19,7 @@
             color: white;
             text-align: center;
             overflow-x: hidden;
-            height: 200vh; /* Sayfanın aşağı kaydırılabilir olmasını sağlar */
+            height: 200vh;
         }
 
         h1 {
@@ -182,7 +182,6 @@
             shortcuts.style.opacity = "1";
         });
 
-        // WASD VE DİĞER TUŞLARIN EAGLERCRAFT TARAFINDAN ALGILANMASINI SAĞLA
         document.addEventListener("keydown", function(event) {
             let iframe = document.getElementById("gameFrame").contentWindow;
             iframe.postMessage({ action: "keydown", key: event.key }, "*");
