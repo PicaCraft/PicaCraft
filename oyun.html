@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Eaglercraft</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle, #000000, #0a0a0a, #141414);
+            color: white;
+            text-align: center;
+        }
+
+        #container {
+            width: 900px;
+            height: 500px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 30px rgba(0, 255, 0, 0.8);
+            overflow: hidden;
+            background: black;
+            margin: 50px auto;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: rgba(0, 255, 0, 0.7);
+            border: none;
+            color: black;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgba(0, 255, 0, 1);
+        }
+
+        #shortcuts {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.5);
+            border-radius: 10px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+
+        .shortcut {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Gelişmiş Eaglercraft</h1>
+    <p>Kısayolları görmek için aşağı kaydır.</p>
+
+    <div id="container">
+        <div id="controls">
+            <button id="fullscreenBtn">Tam Ekran</button>
+            <button id="exitFullscreenBtn">Tam Ekrandan Çık</button>
+        </div>
+        <iframe id="gameFrame"></iframe>
+    </div>
+
+    <div id="shortcuts">
+        <h2>Kısayollar</h2>
+        <p class="shortcut">CTRL + 1 → Tam ekrana geç</p>
+        <p class="shortcut">CTRL + 2 → Tam ekrandan çık</p>
+        <p class="shortcut">CTRL + 3 → Sayfayı yenile</p>
+        <p class="shortcut">CTRL + 4 → Arka planı değiştir</p>
+        <p class="shortcut">CTRL + 5 → Iframe'i yenile</p>
+        <p class="shortcut">CTRL + 6 → Yazı rengini değiştir</p>
+        <p class="shortcut">CTRL + 7 → Çerçeve rengini değiştir</p>
+        <p class="shortcut">CTRL + 8 → Arayüzü gizle/göster</p>
+        <p class="shortcut">CTRL + 9 → Konsola gizli mesaj yazdır</p>
+        <p class="shortcut">CTRL + 0 → Sürpriz mesaj göster</p>
+    </div>
+
+    <script>
+        const encryptedURL = "ZmYyMzM1ZDFkYjAxZjYyNmY3NmNkYzIz"; 
+
+        function decryptURL(encrypted) {
+            let decoded = atob(encrypted); 
+            return decoded;
+        }
+
+        document.getElementById("gameFrame").src = decryptURL(encryptedURL);
+
+        function toggleFullscreen() {
+            let iframe = document.getElementById("gameFrame");
+            if (!document.fullscreenElement) {
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.getElementById("fullscreenBtn").addEventListener("click", toggleFullscreen);
+        document.getElementById("exitFullscreenBtn").addEventListener("click", function() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.ctrlKey) {
+                switch (event.key) {
+                    case "1":
+                        toggleFullscreen();
+                        break;
+                    case "2":
+                        if (document.exitFullscreen) document.exitFullscreen();
+                        break;
+                    case "3":
+                        location.reload();
+                        break;
+                    case "4":
+                        document.body.style.background = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                        break;
+                    case "5":
+                        document.getElementById("gameFrame").src = decryptURL(encryptedURL);
+                        break;
+                    case "6":
+                        document.body.style.color = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                        break;
+                    case "7":
+                        document.getElementById("container").style.boxShadow = `0px 0px 30px rgba(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255}, 0.8)`;
+                        break;
+                    case "8":
+                        let container = document.getElementById("container");
+                        container.style.display = (container.style.display === "none") ? "block" : "none";
+                        break;
+                    case "9":
+                        console.log("Gizli Mesaj: Eaglercraft özel!");
+                        break;
+                    case "0":
+                        alert("Sürpriz! Özel mesaj: Minecraft'ı seviyoruz!");
+                        break;
+                }
+            }
+        });
+
+        window.addEventListener("scroll", function() {
+            document.getElementById("shortcuts").style.display = "block";
+        });
+
+    </script>
+
+</body>
+</html>
