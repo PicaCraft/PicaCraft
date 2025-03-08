@@ -4,96 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicadorCraft Yükleniyor...</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
+
         body {
-            background: #1a1a1a;
+            background: #111;
             color: white;
-            font-family: 'Orbitron', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center;
             overflow: hidden;
             flex-direction: column;
+            text-align: center;
         }
-        .loader-container {
+
+        .loading-container {
             position: relative;
+            width: 80%;
+            max-width: 500px;
         }
+
+        .loading-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #00ff00;
+            transition: width 0.2s ease-in-out;
+        }
+
+        .loading-text {
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
         .logo {
-            font-size: 26px;
-            text-shadow: 3px 3px 5px #00ff00;
-            animation: fadeIn 2s ease-in-out;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #0ff, #ff0, #f00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .loading-animation {
-            width: 6em;
-            height: 6em;
-        }
+
         .footer {
-            font-size: 12px;
-            margin-top: 20px;
-            opacity: 0.8;
-        }
-        .torch {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .torch-body {
-            width: 10px;
-            height: 50px;
-            background: brown;
-            position: relative;
-            border-radius: 3px;
-        }
-        .flame {
             position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 30px;
-            background: orange;
-            border-radius: 50% 50% 0 0;
-            animation: flicker 0.2s infinite alternate;
-        }
-        @keyframes flicker {
-            0% { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.1); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            bottom: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
 <body>
-    <div class="loader-container">
-        <div class="logo">PicadorCraft</div>
-        <svg class="loading-animation" width="240" height="240" viewBox="0 0 240 240">
-            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#f42f25" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
-            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#f49725" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
-            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#255ff4" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
-            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#f42582" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
-        </svg>
-        <div class="torch">
-            <div class="torch-body"></div>
-            <div class="flame"></div>
+    <div class="logo">PicadorCraft</div>
+    <div class="loading-container">
+        <div class="loading-bar">
+            <div class="progress"></div>
         </div>
-        <div class="footer">DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a></div>
+        <div class="loading-text">Yükleniyor... %0</div>
     </div>
+    <div class="footer">DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a></div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(() => {
-                window.location.href = "oyun.html";
-            }, 10000);
-        });
+        let progress = 0;
+        function updateLoading() {
+            if (progress < 100) {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if (progress > 100) progress = 100;
+                document.querySelector('.progress').style.width = progress + "%";
+                document.querySelector('.loading-text').textContent = "Yükleniyor... %" + progress;
+                setTimeout(updateLoading, Math.random() * 500 + 200);
+            } else {
+                document.querySelector('.loading-text').textContent = "Tamamlandı!";
+                setTimeout(() => {
+                    window.location.href = "oyun.html";
+                }, 1000);
+            }
+        }
+
+        setTimeout(updateLoading, 1000);
     </script>
 </body>
 </html>
