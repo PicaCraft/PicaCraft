@@ -30,21 +30,9 @@
             text-shadow: 3px 3px 0px #00ff00;
             animation: fadeIn 2s ease-in-out;
         }
-        .loading-bar {
-            width: 300px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .progress {
-            width: 0;
-            height: 100%;
-            background: #00ff00;
-            position: absolute;
-            transition: width 10s linear;
+        .loading-animation {
+            width: 6em;
+            height: 6em;
         }
         .footer {
             font-size: 12px;
@@ -60,17 +48,17 @@
 <body>
     <div class="loader-container">
         <div class="logo">PicadorCraft</div>
-        <div class="loading-bar">
-            <div class="progress"></div>
-        </div>
+        <svg class="loading-animation" width="240" height="240" viewBox="0 0 240 240">
+            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke="#f42f25" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke="#f49725" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke="#255ff4" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke="#f42582" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+        </svg>
         <div class="footer">DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a></div>
     </div>
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let progress = document.querySelector(".progress");
-            progress.style.width = "100%";
-            
             setTimeout(() => {
                 window.location.href = "oyun.html";
             }, 10000);
