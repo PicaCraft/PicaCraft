@@ -139,6 +139,10 @@
         const turboSwitch = document.getElementById("turboSwitch");
         const fullscreenBtn = document.getElementById("fullscreenBtn");
         const keyDisplay = document.getElementById("keyDisplay");
+        const container = document.getElementById("container");
+
+        // Iframe'e odaklanma
+        gameFrame.focus();
 
         // Turbo Mode Toggle
         turboSwitch.addEventListener("click", toggleTurbo);
@@ -149,7 +153,7 @@
             gameFrame.contentWindow.postMessage({ 
                 action: "toggleTurbo", 
                 active: turboActive,
-                performanceBoost: 3 // 3x performance multiplier
+                performanceBoost: 3
             }, "*");
         }
 
@@ -157,7 +161,6 @@
         fullscreenBtn.addEventListener("click", goFullscreen);
         
         function goFullscreen() {
-            const container = document.getElementById("container");
             if (container.requestFullscreen) {
                 container.requestFullscreen();
             } else if (container.webkitRequestFullscreen) {
@@ -165,19 +168,28 @@
             } else if (container.msRequestFullscreen) {
                 container.msRequestFullscreen();
             }
+            gameFrame.focus(); // Tam ekrana geçince iframe'e odaklan
         }
 
         // Keyboard Handling
         document.addEventListener("keydown", function(event) {
-            event.preventDefault(); // Prevent default browser actions
-            
-            // Send key events to iframe
-            gameFrame.contentWindow.postMessage({ 
-                action: "keydown", 
-                key: event.key 
-            }, "*");
+            // Kısayol tuşları hariç diğer tuşlarda preventDefault kullanma
+            const shortcutKeys = ['f', 't', 'r', 'm', 'q'];
+            if (!shortcutKeys.includes(event.key.toLowerCase())) {
+                // Oyun tuşlarını iframe'e yönlendir
+                const keyEvent = new KeyboardEvent("keydown", {
+                    key: event.key,
+                    code: event.code,
+                    keyCode: event.keyCode,
+                    which: event.which,
+                    bubbles: true
+                });
+                gameFrame.contentWindow.dispatchEvent(keyEvent);
+            } else {
+                event.preventDefault(); // Kısayollar için varsayılanı engelle
+            }
 
-            // Display pressed key
+            // Key Display
             keyDisplay.innerText = event.key.toUpperCase();
             keyDisplay.style.display = "block";
             setTimeout(() => {
@@ -193,7 +205,7 @@
                     toggleTurbo();
                     break;
                 case 'r':
-                    gameFrame.src = gameFrame.src; // Reload game
+                    gameFrame.src = gameFrame.src;
                     break;
                 case 'm':
                     gameFrame.contentWindow.postMessage({ 
@@ -201,25 +213,32 @@
                     }, "*");
                     break;
                 case 'q':
-                    window.location.reload(); // Quick exit
+                    window.location.reload();
                     break;
             }
+
+            // Iframe'e tekrar odaklan
+            gameFrame.focus();
         });
 
-        // Handle iframe messages (for better communication)
-        window.addEventListener("message", function(event) {
-            if (event.data.action === "ready") {
-                console.log("Game is ready");
-            }
+        // Iframe'e tıklayınca odaklanmasını sağla
+        container.addEventListener("click", () => {
+            gameFrame.focus();
         });
 
-        // Exit fullscreen handler
+        // Iframe yüklendiğinde odaklan
+        gameFrame.addEventListener("load", () => {
+            gameFrame.focus();
+        });
+
+        // Fullscreen değişimlerini izle
         document.addEventListener("fullscreenchange", function() {
             if (!document.fullscreenElement) {
                 fullscreenBtn.innerText = "Tam Ekran";
             } else {
                 fullscreenBtn.innerText = "Tam Ekrandan Çık";
             }
+            gameFrame.focus();
         });
     </script>
 </body>
