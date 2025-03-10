@@ -60,9 +60,39 @@
             animation: fadeOut 2s ease-in-out forwards;
         }
 
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
+        #keyDisplay {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 255, 0, 0.8);
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            background: rgba(0, 255, 0, 0.8);
+            border: none;
+            color: black;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgba(0, 255, 0, 1);
         }
     </style>
 </head>
@@ -72,8 +102,13 @@
     <p>Kısayolları görmek için aşağı kaydır.</p>
     
     <div id="turboAnimation">TURBO MOD AKTİF</div>
+    <div id="keyDisplay"></div>
 
     <div id="container">
+        <div id="controls">
+            <button id="fullscreenBtn">Tam Ekran</button>
+            <button id="turboBtn">Turbo Mod</button>
+        </div>
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
@@ -81,38 +116,42 @@
         let turboActive = false;
         let ledActive = true;
 
-        document.addEventListener("keydown", function(event) {
-            let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "keydown", key: event.key }, "*");
-            
-            if (event.ctrlKey) {
-                switch (event.key) {
-                    case "1":
-                        document.documentElement.requestFullscreen();
-                        break;
-                    case "2":
-                        document.exitFullscreen();
-                        break;
-                    case "8":
-                        ledActive = !ledActive;
-                        document.getElementById("container").style.borderColor = ledActive ? "#0f0" : "#f00";
-                        break;
-                    case "9":
-                        activateTurbo();
-                        break;
-                }
+        document.getElementById("fullscreenBtn").addEventListener("click", function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
             }
         });
 
-        function activateTurbo() {
-            turboActive = true;
-            document.getElementById("turboAnimation").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("turboAnimation").style.display = "none";
-            }, 2000);
+        document.getElementById("turboBtn").addEventListener("click", function() {
+            turboActive = !turboActive;
+            if (turboActive) {
+                document.getElementById("turboAnimation").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("turboAnimation").style.display = "none";
+                }, 2000);
+            }
             let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "enableTurbo" }, "*");
-        }
+            iframe.postMessage({ action: "toggleTurbo", active: turboActive }, "*");
+        });
+
+        document.addEventListener("keydown", function(event) {
+            let iframe = document.getElementById("gameFrame").contentWindow;
+            iframe.postMessage({ action: "keydown", key: event.key }, "*");
+
+            let keyDisplay = document.getElementById("keyDisplay");
+            keyDisplay.innerText = event.key.toUpperCase();
+            keyDisplay.style.display = "block";
+            setTimeout(() => {
+                keyDisplay.style.display = "none";
+            }, 500);
+        });
+
+        document.addEventListener("keyup", function(event) {
+            let iframe = document.getElementById("gameFrame").contentWindow;
+            iframe.postMessage({ action: "keyup", key: event.key }, "*");
+        });
     </script>
 </body>
 </html>
