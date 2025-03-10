@@ -18,26 +18,27 @@
             background: #000;
             color: white;
             text-align: center;
-            overflow-x: hidden;
-            height: 200vh;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         h1 {
-            font-size: 40px;
+            font-size: 48px;
             margin: 20px 0;
             text-shadow: 0 0 15px rgba(0, 255, 0, 1);
         }
 
         #container {
-            width: 900px;
-            height: 500px;
+            width: 90%;
+            max-width: 1200px;
+            height: 70vh;
             border-radius: 15px;
             box-shadow: 0px 0px 40px rgba(0, 255, 0, 0.9);
             overflow: hidden;
             background: black;
-            margin: 50px auto;
+            margin: 30px auto;
             position: relative;
-            border: 10px solid #0f0;
+            border: 5px solid #0f0;
         }
 
         iframe {
@@ -51,57 +52,174 @@
             top: 10px;
             left: 10px;
             background: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 10px;
-            font-size: 18px;
+            padding: 10px 15px;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        #turboSwitch:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
+        #fullscreenBtn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 255, 0, 0.8);
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        #fullscreenBtn:hover {
+            background: rgba(0, 255, 0, 1);
         }
 
         #keyDisplay {
             position: fixed;
-            top: 50px;
+            top: 60px;
             left: 10px;
             background: rgba(0, 255, 0, 0.8);
             padding: 10px;
             font-size: 20px;
             border-radius: 5px;
             display: none;
+            z-index: 1000;
+        }
+
+        #shortcuts {
+            margin: 40px auto;
+            max-width: 800px;
+            text-align: left;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        #shortcuts h2 {
+            color: #0f0;
+            margin-bottom: 20px;
+        }
+
+        #shortcuts p {
+            margin: 10px 0;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-
     <h1>PicadorCraft</h1>
-    <p>Kısayolları görmek için aşağı kaydır.</p>
     
     <div id="turboSwitch">Turbo Mod: Kapalı</div>
+    <div id="fullscreenBtn">Tam Ekran</div>
     <div id="keyDisplay"></div>
 
     <div id="container">
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
+    <div id="shortcuts">
+        <h2>Kısayollar</h2>
+        <p><strong>F</strong> - Tam Ekran Modu</p>
+        <p><strong>T</strong> - Turbo Modu Aç/Kapat (3x Performans)</p>
+        <p><strong>R</strong> - Oyunu Yeniden Yükle</p>
+        <p><strong>M</strong> - Ses Aç/Kapat</p>
+        <p><strong>Q</strong> - Hızlı Çıkış</p>
+    </div>
+
     <script>
         let turboActive = false;
+        const gameFrame = document.getElementById("gameFrame");
+        const turboSwitch = document.getElementById("turboSwitch");
+        const fullscreenBtn = document.getElementById("fullscreenBtn");
+        const keyDisplay = document.getElementById("keyDisplay");
 
-        document.getElementById("turboSwitch").addEventListener("click", function() {
+        // Turbo Mode Toggle
+        turboSwitch.addEventListener("click", toggleTurbo);
+        
+        function toggleTurbo() {
             turboActive = !turboActive;
-            this.innerText = "Turbo Mod: " + (turboActive ? "Açık" : "Kapalı");
-            let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "toggleTurbo", active: turboActive }, "*");
-        });
+            turboSwitch.innerText = "Turbo Mod: " + (turboActive ? "Açık" : "Kapalı");
+            gameFrame.contentWindow.postMessage({ 
+                action: "toggleTurbo", 
+                active: turboActive,
+                performanceBoost: 3 // 3x performance multiplier
+            }, "*");
+        }
 
+        // Fullscreen Functionality
+        fullscreenBtn.addEventListener("click", goFullscreen);
+        
+        function goFullscreen() {
+            const container = document.getElementById("container");
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
+        }
+
+        // Keyboard Handling
         document.addEventListener("keydown", function(event) {
-            let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "keydown", key: event.key }, "*");
+            event.preventDefault(); // Prevent default browser actions
+            
+            // Send key events to iframe
+            gameFrame.contentWindow.postMessage({ 
+                action: "keydown", 
+                key: event.key 
+            }, "*");
 
-            let keyDisplay = document.getElementById("keyDisplay");
+            // Display pressed key
             keyDisplay.innerText = event.key.toUpperCase();
             keyDisplay.style.display = "block";
             setTimeout(() => {
                 keyDisplay.style.display = "none";
             }, 500);
+
+            // Shortcut Handling
+            switch(event.key.toLowerCase()) {
+                case 'f':
+                    goFullscreen();
+                    break;
+                case 't':
+                    toggleTurbo();
+                    break;
+                case 'r':
+                    gameFrame.src = gameFrame.src; // Reload game
+                    break;
+                case 'm':
+                    gameFrame.contentWindow.postMessage({ 
+                        action: "toggleSound" 
+                    }, "*");
+                    break;
+                case 'q':
+                    window.location.reload(); // Quick exit
+                    break;
+            }
+        });
+
+        // Handle iframe messages (for better communication)
+        window.addEventListener("message", function(event) {
+            if (event.data.action === "ready") {
+                console.log("Game is ready");
+            }
+        });
+
+        // Exit fullscreen handler
+        document.addEventListener("fullscreenchange", function() {
+            if (!document.fullscreenElement) {
+                fullscreenBtn.innerText = "Tam Ekran";
+            } else {
+                fullscreenBtn.innerText = "Tam Ekrandan Çık";
+            }
         });
     </script>
 </body>
