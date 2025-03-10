@@ -3,195 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yapılıyor...</title>
+    <title>PicadorCraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: linear-gradient(45deg, #222, #000);
-            color: white;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
-            flex-direction: column;
+            position: relative;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
             text-align: center;
-            animation: bgAnimation 5s infinite alternate;
+            width: 400px;
         }
 
-        @keyframes bgAnimation {
-            0% { background: linear-gradient(45deg, #222, #000); }
-            100% { background: linear-gradient(45deg, #111, #222); }
+        h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 28px;
         }
 
-        /* Şifre Giriş Ekranı */
-        .password-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .input__container {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 15px;
-            background: #f0f0f0;
-            padding: 20px;
-            border: 4px solid #000;
-            max-width: 350px;
-            transition: all 400ms cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 10px 10px 0 #000;
-        }
-
-        .input__search {
+        input {
             width: 100%;
             padding: 15px;
-            font-size: 18px;
-            border: 3px solid #000;
-            outline: none;
+            margin: 15px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
         }
 
-        .input__button {
+        button {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            padding: 10px;
-            border: 3px solid #000;
-            background: #e9b50b;
+            font-size: 22px;
             font-weight: bold;
+            transition: 0.3s ease-in-out;
         }
 
-        .error-message {
-            color: red;
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .message {
+            color: white;
             margin-top: 10px;
+            font-size: 18px;
             display: none;
         }
 
-        /* Yükleme Ekranı */
-        .loading-container {
-            position: relative;
-            width: 80%;
-            max-width: 600px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
             display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .loading-terminal {
+            font-size: 18px;
+            font-family: monospace;
+            color: lime;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            width: 600px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 2px solid lime;
+            box-shadow: 0 0 20px lime;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .blink {
+            animation: blink 1s infinite;
         }
 
         .loading-bar {
-            width: 100%;
+            width: 50%;
             height: 20px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
+            margin-top: 20px;
             overflow: hidden;
-            margin-top: 30px;
+            position: relative;
         }
 
-        .progress {
-            width: 0%;
+        .loading-progress {
             height: 100%;
-            background: linear-gradient(90deg, #0ff, #00f, #0ff);
-            transition: width 0.1s ease-in-out;
-            box-shadow: 0 0 30px #0ff;
+            width: 0;
+            background: lime;
+            transition: width 1s ease-in-out;
         }
 
-        .loading-text {
-            font-size: 30px;
-            margin-top: 25px;
-            font-weight: bold;
-            animation: textPulse 1s infinite alternate;
-        }
-
-        @keyframes textPulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        .logo {
-            font-size: 50px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            background: linear-gradient(45deg, #0ff, #ff0, #f00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 50px rgba(255, 255, 255, 1);
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.85);
-        }
     </style>
 </head>
 <body>
-    <!-- Şifre Giriş Ekranı -->
-    <div class="password-container">
-        <h2>Giriş Yapın</h2>
-        <div class="input__container">
-            <input type="text" id="passwordInput" class="input__search" placeholder="Şifre Giriniz">
-            <button class="input__button" onclick="checkPassword()">Giriş</button>
-        </div>
-        <div class="error-message" id="errorMessage">Hatalı şifre! Tekrar deneyin.</div>
+
+    <div class="login-container">
+        <h2>Giriş Yap</h2>
+        <input type="password" id="password" placeholder="Şifreyi Gir" onkeypress="handleKeyPress(event)">
+        <button onclick="checkPassword()">Giriş</button>
+        <p class="message" id="errorMessage">Hatalı Şifre!</p>
     </div>
 
-    <!-- Yükleme Ekranı -->
-    <div class="logo">PicadorCraft</div>
-    <div class="loading-container">
-        <div class="loading-bar">
-            <div class="progress"></div>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-terminal">
+            <p><span class="blink">█</span> Sunucuya bağlanıyor...</p>
+            <p id="status1"></p>
+            <p id="status2"></p>
+            <p id="status3"></p>
+            <p id="status4"></p>
         </div>
-        <div class="loading-text">Yükleniyor... %0</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
     </div>
-    <div class="footer">DevBy: <a href="https://discord.gg/picadorso2" target="_blank" style="color: #00ff00; text-decoration: none;">discord.gg/picadorso2</a></div>
 
     <script>
         function checkPassword() {
-            const password = document.getElementById("passwordInput").value;
-            const correctPassword = "picadorcraft88";
-            const errorMessage = document.getElementById("errorMessage");
-            const passwordContainer = document.querySelector(".password-container");
-            const loadingContainer = document.querySelector(".loading-container");
+            let password = document.getElementById("password").value;
+            let errorMessage = document.getElementById("errorMessage");
 
-            if (password === correctPassword) {
-                passwordContainer.style.display = "none";
-                loadingContainer.style.display = "block";
+            if (password === "picadorcraft88") {
                 startLoading();
             } else {
                 errorMessage.style.display = "block";
             }
         }
 
-        function startLoading() {
-            let progress = 0;
-            function updateLoading() {
-                if (progress < 100) {
-                    progress += Math.floor(Math.random() * 5) + 5;
-                    if (progress > 100) progress = 100;
-                    document.querySelector('.progress').style.width = progress + "%";
-                    document.querySelector('.loading-text').textContent = "Yükleniyor... %" + progress;
-                    setTimeout(updateLoading, Math.random() * 250 + 100);
-                } else {
-                    document.querySelector('.loading-text').textContent = "Tamamlandı!";
-                    setTimeout(() => {
-                        window.location.href = "oyun.html";
-                    }, 1500);
-                }
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                checkPassword();
             }
-            setTimeout(updateLoading, 500);
+        }
+
+        function startLoading() {
+            document.querySelector(".login-container").style.display = "none";
+            let loadingScreen = document.getElementById("loadingScreen");
+            loadingScreen.style.display = "flex";
+
+            let status1 = document.getElementById("status1");
+            let status2 = document.getElementById("status2");
+            let status3 = document.getElementById("status3");
+            let status4 = document.getElementById("status4");
+            let progress = document.getElementById("loadingProgress");
+
+            setTimeout(() => { status1.innerText = "Bağlantı başlatılıyor..."; progress.style.width = "25%"; }, 1000);
+            setTimeout(() => { status2.innerText = "Güvenlik protokolleri kontrol ediliyor..."; progress.style.width = "50%"; }, 3000);
+            setTimeout(() => { status3.innerText = "Veri aktarımı başlatıldı..."; progress.style.width = "75%"; }, 6000);
+            setTimeout(() => { status4.innerText = "Bağlantı başarılı! Oyun açılıyor..."; progress.style.width = "100%"; }, 9000);
+
+            setTimeout(() => {
+                window.location.href = "oyun.html";
+            }, 10000);
         }
     </script>
+
 </body>
 </html>
