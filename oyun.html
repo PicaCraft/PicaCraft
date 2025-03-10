@@ -37,6 +37,8 @@
             background: black;
             margin: 50px auto;
             position: relative;
+            border: 10px solid #0f0;
+            transition: border 0.5s ease-in-out;
         }
 
         iframe {
@@ -69,30 +71,46 @@
             background: rgba(0, 255, 0, 1);
         }
 
-        #shortcuts {
-            margin-top: 50px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            box-shadow: 0px 0px 20px rgba(0, 255, 0, 0.7);
-            border-radius: 10px;
-            width: 80%;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+        #turboSwitch {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: red;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.5s;
         }
 
-        .shortcut {
-            font-size: 18px;
-            margin: 10px 0;
+        #keyboardToggle {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background: blue;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.5s;
         }
 
+        @keyframes turboEffect {
+            0% { border-color: red; }
+            50% { border-color: yellow; }
+            100% { border-color: lime; }
+        }
     </style>
 </head>
 <body>
 
     <h1>PicadorCraft</h1>
     <p>Kısayolları görmek için aşağı kaydır.</p>
+    
+    <div id="turboSwitch">Turbo Mod: Kapalı</div>
+    <div id="keyboardToggle">Klavye Algı: Açık</div>
 
     <div id="container">
         <div id="controls">
@@ -102,97 +120,45 @@
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
-    <div id="shortcuts">
-        <h2>Kısayollar</h2>
-        <p class="shortcut">CTRL + 1 → Tam ekrana geç</p>
-        <p class="shortcut">CTRL + 2 → Tam ekrandan çık</p>
-        <p class="shortcut">CTRL + 3 → Oyunu yeniden başlat</p>
-        <p class="shortcut">CTRL + 4 → Oyunu duraklat</p>
-        <p class="shortcut">CTRL + 5 → Oyunu devam ettir</p>
-        <p class="shortcut">CTRL + 6 → Sesi aç/kapat</p>
-        <p class="shortcut">CTRL + 7 → Fareyi gizle/göster</p>
-        <p class="shortcut">CTRL + 8 → RGB Efekt Aç/Kapat</p>
-    </div>
-
     <script>
-        let rgbActive = false;
-        let rgbInterval;
+        let turboActive = false;
+        let keyboardActive = true;
 
-        function toggleFullscreen() {
-            let iframe = document.getElementById("gameFrame");
-            if (!document.fullscreenElement) {
-                iframe.requestFullscreen();
+        document.getElementById("turboSwitch").addEventListener("click", function() {
+            turboActive = !turboActive;
+            let frame = document.getElementById("gameFrame").contentWindow;
+            let container = document.getElementById("container");
+            if (turboActive) {
+                this.innerText = "Turbo Mod: Açık";
+                this.style.background = "lime";
+                container.style.animation = "turboEffect 1s infinite alternate";
+                frame.postMessage({ action: "enableTurbo" }, "*");
             } else {
-                document.exitFullscreen();
+                this.innerText = "Turbo Mod: Kapalı";
+                this.style.background = "red";
+                container.style.animation = "none";
+                frame.postMessage({ action: "disableTurbo" }, "*");
             }
-        }
+        });
 
-        document.getElementById("fullscreenBtn").addEventListener("click", toggleFullscreen);
-        document.getElementById("exitFullscreenBtn").addEventListener("click", function() {
-            document.exitFullscreen();
+        document.getElementById("keyboardToggle").addEventListener("click", function() {
+            keyboardActive = !keyboardActive;
+            this.innerText = keyboardActive ? "Klavye Algı: Açık" : "Klavye Algı: Kapalı";
+            this.style.background = keyboardActive ? "blue" : "gray";
         });
 
         document.addEventListener("keydown", function(event) {
-            if (event.ctrlKey) {
-                let iframe = document.getElementById("gameFrame").contentWindow;
-                switch (event.key) {
-                    case "1":
-                        toggleFullscreen();
-                        break;
-                    case "2":
-                        document.exitFullscreen();
-                        break;
-                    case "3":
-                        iframe.location.reload();
-                        break;
-                    case "4":
-                        iframe.postMessage({ action: "pauseGame" }, "*");
-                        break;
-                    case "5":
-                        iframe.postMessage({ action: "resumeGame" }, "*");
-                        break;
-                    case "6":
-                        iframe.postMessage({ action: "toggleSound" }, "*");
-                        break;
-                    case "7":
-                        iframe.postMessage({ action: "toggleCursor" }, "*");
-                        break;
-                    case "8":
-                        toggleRGB();
-                        break;
-                }
-            }
-        });
-
-        function toggleRGB() {
-            if (rgbActive) {
-                clearInterval(rgbInterval);
-                document.body.style.background = "#000";
-                rgbActive = false;
-            } else {
-                rgbInterval = setInterval(() => {
-                    document.body.style.background = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
-                }, 500);
-                rgbActive = true;
-            }
-        }
-
-        window.addEventListener("scroll", function() {
-            let shortcuts = document.getElementById("shortcuts");
-            shortcuts.style.opacity = "1";
-        });
-
-        document.addEventListener("keydown", function(event) {
+            if (!keyboardActive) return;
             let iframe = document.getElementById("gameFrame").contentWindow;
             iframe.postMessage({ action: "keydown", key: event.key }, "*");
         });
 
         document.addEventListener("keyup", function(event) {
+            if (!keyboardActive) return;
             let iframe = document.getElementById("gameFrame").contentWindow;
             iframe.postMessage({ action: "keyup", key: event.key }, "*");
         });
 
     </script>
-
 </body>
 </html>
