@@ -38,7 +38,6 @@
             margin: 50px auto;
             position: relative;
             border: 10px solid #0f0;
-            transition: border 0.5s ease-in-out;
         }
 
         iframe {
@@ -47,60 +46,23 @@
             border: none;
         }
 
-        #controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            background: rgba(0, 255, 0, 0.8);
-            border: none;
-            color: black;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: rgba(0, 255, 0, 1);
-        }
-
-        #turboSwitch {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: red;
+        #turboAnimation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.9);
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.5s;
+            padding: 20px;
+            font-size: 30px;
+            border-radius: 10px;
+            display: none;
+            animation: fadeOut 2s ease-in-out forwards;
         }
 
-        #keyboardToggle {
-            position: absolute;
-            top: 50px;
-            left: 10px;
-            background: blue;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.5s;
-        }
-
-        @keyframes turboEffect {
-            0% { border-color: red; }
-            50% { border-color: yellow; }
-            100% { border-color: lime; }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; display: none; }
         }
     </style>
 </head>
@@ -109,56 +71,48 @@
     <h1>PicadorCraft</h1>
     <p>Kısayolları görmek için aşağı kaydır.</p>
     
-    <div id="turboSwitch">Turbo Mod: Kapalı</div>
-    <div id="keyboardToggle">Klavye Algı: Açık</div>
+    <div id="turboAnimation">TURBO MOD AKTİF</div>
 
     <div id="container">
-        <div id="controls">
-            <button id="fullscreenBtn">Tam Ekran</button>
-            <button id="exitFullscreenBtn">Tam Ek. Çık</button>
-        </div>
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
     <script>
         let turboActive = false;
-        let keyboardActive = true;
+        let ledActive = true;
 
-        document.getElementById("turboSwitch").addEventListener("click", function() {
-            turboActive = !turboActive;
-            let frame = document.getElementById("gameFrame").contentWindow;
-            let container = document.getElementById("container");
-            if (turboActive) {
-                this.innerText = "Turbo Mod: Açık";
-                this.style.background = "lime";
-                container.style.animation = "turboEffect 1s infinite alternate";
-                frame.postMessage({ action: "enableTurbo" }, "*");
-            } else {
-                this.innerText = "Turbo Mod: Kapalı";
-                this.style.background = "red";
-                container.style.animation = "none";
-                frame.postMessage({ action: "disableTurbo" }, "*");
+        document.addEventListener("keydown", function(event) {
+            let iframe = document.getElementById("gameFrame").contentWindow;
+            iframe.postMessage({ action: "keydown", key: event.key }, "*");
+            
+            if (event.ctrlKey) {
+                switch (event.key) {
+                    case "1":
+                        document.documentElement.requestFullscreen();
+                        break;
+                    case "2":
+                        document.exitFullscreen();
+                        break;
+                    case "8":
+                        ledActive = !ledActive;
+                        document.getElementById("container").style.borderColor = ledActive ? "#0f0" : "#f00";
+                        break;
+                    case "9":
+                        activateTurbo();
+                        break;
+                }
             }
         });
 
-        document.getElementById("keyboardToggle").addEventListener("click", function() {
-            keyboardActive = !keyboardActive;
-            this.innerText = keyboardActive ? "Klavye Algı: Açık" : "Klavye Algı: Kapalı";
-            this.style.background = keyboardActive ? "blue" : "gray";
-        });
-
-        document.addEventListener("keydown", function(event) {
-            if (!keyboardActive) return;
+        function activateTurbo() {
+            turboActive = true;
+            document.getElementById("turboAnimation").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("turboAnimation").style.display = "none";
+            }, 2000);
             let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "keydown", key: event.key }, "*");
-        });
-
-        document.addEventListener("keyup", function(event) {
-            if (!keyboardActive) return;
-            let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "keyup", key: event.key }, "*");
-        });
-
+            iframe.postMessage({ action: "enableTurbo" }, "*");
+        }
     </script>
 </body>
 </html>
