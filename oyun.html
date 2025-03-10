@@ -46,53 +46,27 @@
             border: none;
         }
 
-        #turboAnimation {
+        #turboSwitch {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 0, 0, 0.9);
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 0, 0, 0.8);
             color: white;
-            padding: 20px;
-            font-size: 30px;
-            border-radius: 10px;
-            display: none;
-            animation: fadeOut 2s ease-in-out forwards;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         #keyDisplay {
             position: fixed;
-            top: 10px;
+            top: 50px;
             left: 10px;
             background: rgba(0, 255, 0, 0.8);
             padding: 10px;
             font-size: 20px;
             border-radius: 5px;
             display: none;
-        }
-
-        #controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            background: rgba(0, 255, 0, 0.8);
-            border: none;
-            color: black;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: rgba(0, 255, 0, 1);
         }
     </style>
 </head>
@@ -101,37 +75,19 @@
     <h1>PicadorCraft</h1>
     <p>Kısayolları görmek için aşağı kaydır.</p>
     
-    <div id="turboAnimation">TURBO MOD AKTİF</div>
+    <div id="turboSwitch">Turbo Mod: Kapalı</div>
     <div id="keyDisplay"></div>
 
     <div id="container">
-        <div id="controls">
-            <button id="fullscreenBtn">Tam Ekran</button>
-            <button id="turboBtn">Turbo Mod</button>
-        </div>
         <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard"></iframe>
     </div>
 
     <script>
         let turboActive = false;
-        let ledActive = true;
 
-        document.getElementById("fullscreenBtn").addEventListener("click", function() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                document.exitFullscreen();
-            }
-        });
-
-        document.getElementById("turboBtn").addEventListener("click", function() {
+        document.getElementById("turboSwitch").addEventListener("click", function() {
             turboActive = !turboActive;
-            if (turboActive) {
-                document.getElementById("turboAnimation").style.display = "block";
-                setTimeout(() => {
-                    document.getElementById("turboAnimation").style.display = "none";
-                }, 2000);
-            }
+            this.innerText = "Turbo Mod: " + (turboActive ? "Açık" : "Kapalı");
             let iframe = document.getElementById("gameFrame").contentWindow;
             iframe.postMessage({ action: "toggleTurbo", active: turboActive }, "*");
         });
@@ -146,11 +102,6 @@
             setTimeout(() => {
                 keyDisplay.style.display = "none";
             }, 500);
-        });
-
-        document.addEventListener("keyup", function(event) {
-            let iframe = document.getElementById("gameFrame").contentWindow;
-            iframe.postMessage({ action: "keyup", key: event.key }, "*");
         });
     </script>
 </body>
