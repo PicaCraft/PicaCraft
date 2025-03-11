@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PicadorCraft</title>
+    <title>Proje X</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
@@ -327,26 +327,27 @@
         }
     </style>
 </head>
-<body>
+<body class="performance-mode">
     <div id="buttonContainer">
         <div id="turboSwitch">Turbo Mod: Kapalı</div>
         <div id="rgbSwitch">RGB Mod</div>
         <div id="fullscreenBtn">Tam Ekran</div>
     </div>
-    <h1>PicadorCraft</h1>
+    <h1>Proje X</h1>
     
     <div id="keyDisplay"></div>
     <div id="turboAnimation">TURBO ON!</div>
 
     <div id="container">
-        <iframe id="gameFrame" src="https://eaglercraft.com/mc/1.8.8/" allow="keyboard" loading="lazy"></iframe>
+        <!-- Yerel bir dosya varsayımıyla, eaglercraft.com yerine yerel bir yol kullanıldı -->
+        <iframe id="contentFrame" src="./mc/1.8.8/index.html" allow="keyboard" loading="lazy"></iframe>
     </div>
 
     <div id="shortcuts">
         <h2>Kısayollar</h2>
         <p><strong>Ctrl + F</strong> - Tam Ekran Modu</p>
-        <p><strong>Ctrl + T</strong> - Turbo Modu Aç/Kapat (8x Performans)</p>
-        <p><strong>Ctrl + R</strong> - Oyunu Yeniden Yükle</p>
+        <p><strong>Ctrl + T</strong> - Turbo Modu Aç/Kapat</p>
+        <p><strong>Ctrl + R</strong> - İçeriği Yeniden Yükle</p>
         <p><strong>Ctrl + M</strong> - Ses Aç/Kapat</p>
         <p><strong>Ctrl + Q</strong> - Hızlı Çıkış</p>
         <p><strong>Shift + K</strong> - Performans Modu Aç/Kapat</p>
@@ -354,8 +355,8 @@
 
     <script>
         let turboActive = false;
-        let performanceMode = false;
-        const gameFrame = document.getElementById("gameFrame");
+        let performanceMode = true; // Varsayılan olarak performans modu açık
+        const contentFrame = document.getElementById("contentFrame");
         const turboSwitch = document.getElementById("turboSwitch");
         const rgbSwitch = document.getElementById("rgbSwitch");
         const fullscreenBtn = document.getElementById("fullscreenBtn");
@@ -371,7 +372,7 @@
         ];
         let currentTheme = 0;
 
-        gameFrame.focus();
+        contentFrame.focus();
 
         turboSwitch.addEventListener("click", toggleTurbo);
         rgbSwitch.addEventListener("click", changeRGB);
@@ -390,7 +391,7 @@
             const baseFPS = 60;
             const turboFPS = baseFPS * 2;
 
-            gameFrame.contentWindow.postMessage({ 
+            contentFrame.contentWindow.postMessage({ 
                 action: "toggleTurbo", 
                 active: turboActive,
                 performanceBoost: 8,
@@ -420,7 +421,7 @@
             } else if (container.msRequestFullscreen) {
                 container.msRequestFullscreen();
             }
-            gameFrame.focus();
+            contentFrame.focus();
         }
 
         document.addEventListener("keydown", function(event) {
@@ -433,7 +434,7 @@
                     which: event.which,
                     bubbles: true
                 });
-                gameFrame.contentWindow.dispatchEvent(keyEvent);
+                contentFrame.contentWindow.dispatchEvent(keyEvent);
             } else {
                 event.preventDefault();
             }
@@ -453,10 +454,10 @@
                         toggleTurbo();
                         break;
                     case 'r':
-                        gameFrame.src = gameFrame.src;
+                        contentFrame.src = contentFrame.src;
                         break;
                     case 'm':
-                        gameFrame.contentWindow.postMessage({ 
+                        contentFrame.contentWindow.postMessage({ 
                             action: "toggleSound" 
                         }, "*");
                         break;
@@ -468,7 +469,7 @@
                 togglePerformanceMode();
             }
 
-            gameFrame.focus();
+            contentFrame.focus();
         });
 
         function togglePerformanceMode() {
@@ -491,12 +492,12 @@
         }
 
         container.addEventListener("click", () => {
-            gameFrame.focus();
+            contentFrame.focus();
         });
 
-        gameFrame.addEventListener("load", () => {
-            gameFrame.focus();
-            gameFrame.contentWindow.postMessage({
+        contentFrame.addEventListener("load", () => {
+            contentFrame.focus();
+            contentFrame.contentWindow.postMessage({
                 action: "setPerformance",
                 frameRate: 60,
                 renderingQuality: "medium"
@@ -505,7 +506,7 @@
 
         document.addEventListener("fullscreenchange", function() {
             fullscreenBtn.innerText = document.fullscreenElement ? "Tam Ekrandan Çık" : "Tam Ekran";
-            gameFrame.focus();
+            contentFrame.focus();
         });
 
         window.addEventListener("message", (event) => {
