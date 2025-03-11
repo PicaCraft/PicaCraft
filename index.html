@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicadorCraft - Giriş</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0a1f;overflow:hidden;perspective:2000px;}
+        .bg{position:absolute;width:100%;height:100%;background:radial-gradient(circle,#1a2b5e,#0a0a1f);animation:bgShift 12s infinite,spinBg 20s infinite;}
+        @keyframes bgShift{0%,100%{filter:brightness(1) hue-rotate(0deg);}50%{filter:brightness(1.8) hue-rotate(60deg);}}
+        @keyframes spinBg{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+        .particles{position:absolute;width:100%;height:100%;z-index:1;}
+        .particle{position:absolute;width:10px;height:10px;background:#00ff00;border-radius:50%;box-shadow:0 0 15px #00ff00;animation:particleFlow 3s infinite,particlePulse 1s infinite alternate;}
+        @keyframes particleFlow{0%{transform:translateY(100vh) translateX(-50vw) scale(0);opacity:0;}50%{opacity:1;}100%{transform:translateY(-100vh) translateX(50vw) scale(1.5);opacity:0;}}
+        @keyframes particlePulse{0%{box-shadow:0 0 15px #00ff00;}100%{box-shadow:0 0 30px #00ff00aa;}}
+        .container{position:relative;width:600px;padding:80px;background:rgba(5,5,5,0.95);border:4px solid #00ff00;border-radius:30px;box-shadow:0 0 80px #00ff00,0 0 150px #00ff0033,inset 0 0 20px #00ff00;transform-style:preserve-3d;animation:containerSpin 8s infinite ease-in-out,containerGlow 2s infinite;}
+        @keyframes containerSpin{0%,100%{transform:translateZ(0) rotateX(10deg) rotateY(0deg);}50%{transform:translateZ(100px) rotateX(-10deg) rotateY(360deg);}}
+        @keyframes containerGlow{0%{box-shadow:0 0 80px #00ff00,0 0 150px #00ff0033,inset 0 0 20px #00ff00;}100%{box-shadow:0 0 120px #00ff00,0 0 200px #00ff0066,inset 0 0 40px #00ff00;}}
+        h1{color:#00ff00;font-size:4em;text-shadow:0 0 30px #00ff00,0 0 60px #00ff00aa,0 0 90px #00ff0066;animation:titlePulse 1.5s infinite alternate,titleWave 4s infinite;}
+        @keyframes titlePulse{0%{transform:scale(1);text-shadow:0 0 30px #00ff00,0 0 60px #00ff00aa;}100%{transform:scale(1.05);text-shadow:0 0 50px #00ff00,0 0 80px #00ff00;}}
+        @keyframes titleWave{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px) rotateX(10deg);}}
+        .input-wrapper{position:relative;margin:40px 0;perspective:1000px;}
+        input[type="password"]{width:100%;padding:25px;background:rgba(255,255,255,0.05);border:3px solid #00ff00;border-radius:20px;color:#fff;font-size:1.8em;outline:none;transition:all 0.6s;transform-style:preserve-3d;box-shadow:0 0 20px #00ff0033;}
+        input[type="password"]:focus{transform:rotateX(15deg) rotateY(10deg) scale(1.15);border-color:#00cc00;box-shadow:0 0 40px #00ff00,0 0 80px #00ff0066;}
+        .input-wrapper::before{content:'Şifre';position:absolute;top:-20px;left:30px;padding:0 20px;background:#0a0a1f;color:#00ff00;font-size:1.2em;border:2px solid #00ff00;border-radius:10px;animation:labelSpin 3s infinite;}
+        @keyframes labelSpin{0%,100%{transform:translateY(0) rotateX(0deg);}50%{transform:translateY(-10px) rotateX(360deg);}}
+        button{position:relative;width:100%;padding:25px;background:#00ff00;border:none;border-radius:20px;color:#000;font-size:1.8em;font-weight:bold;cursor:pointer;overflow:hidden;transition:all 0.6s;transform-style:preserve-3d;box-shadow:0 0 30px #00ff00;}
+        button::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(120deg,transparent,#ffffff66,transparent);animation:shine 2s infinite;}
+        button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.7);border-radius:50%;transform:translate(-50%,-50%);transition:all 1s;}
+        button:hover::after{width:600px;height:600px;}
+        button:hover{transform:rotateY(20deg) scale(1.15);background:#00cc00;box-shadow:0 0 50px #00ff00,0 0 100px #00ff00aa;}
+        @keyframes shine{0%{left:-100%;}100%{left:100%;}}
+        .error{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);color:#ff3333;font-size:1.5em;opacity:0;transition:all 0.6s;text-shadow:0 0 10px #ff3333;}
+        .error.show{opacity:1;animation:errorPulse 1s infinite;}
+        @keyframes errorPulse{0%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.1);}100%{transform:translateX(-50%) scale(1);}}
+        .orb{position:absolute;width:60px;height:60px;background:radial-gradient(circle,#00ff00,#00cc00aa);border-radius:50%;box-shadow:0 0 40px #00ff00;animation:orbDance 5s infinite ease-in-out;}
+        .orb:nth-child(1){top:-120px;left:-120px;}
+        .orb:nth-child(2){bottom:-120px;right:-120px;}
+        .orb:nth-child(3){top:50%;left:-150px;}
+        @keyframes orbDance{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.2);}}
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <h1>PicadorCraft</h1>
+        <div class="input-wrapper">
+            <input type="password" id="password" placeholder="Şifreyi Girin">
+        </div>
+        <button onclick="checkPassword()">Giriş Yap</button>
+        <div class="error" id="error">Yanlış Şifre!</div>
+    </div>
+    <script>
+        const correctPassword="picadorcraft88";function checkPassword(){const e=document.getElementById("password").value,t=document.getElementById("error");e===correctPassword?window.location.href="oyun.html":(t.classList.add("show"),setTimeout(()=>{t.classList.remove("show")},2e3))}function createParticle(){const e=document.createElement("div");e.classList.add("particle"),e.style.left=Math.random()*100+"vw",e.style.animationDelay=Math.random()*3+"s",document.getElementById("particles").appendChild(e),setTimeout(()=>{e.remove()},3e3)}setInterval(createParticle,50),document.getElementById("password").addEventListener("keypress",function(e){"Enter"===e.key&&checkPassword()});
+    </script>
+</body>
+</html>
