@@ -339,7 +339,7 @@
     <div id="turboAnimation">TURBO ON!</div>
 
     <div id="container">
-        <iframe id="contentFrame" src="https://eaglercraft.q13x.com/1.8-wasm/?retina=true" allow="keyboard" loading="lazy"></iframe>
+        <iframe id="contentFrame" src="" allow="keyboard" loading="lazy"></iframe>
     </div>
 
     <div id="shortcuts">
@@ -371,6 +371,9 @@
         ];
         let currentTheme = 0;
 
+        // Base64 ile şifrelenmiş URL'yi çöz ve iframe'e ata
+        const encodedUrl = "aHR0cHM6Ly9lYWdsZXJjcmFmdC5xMTN4LmNvbS8xLjgtd2FzbS8/cmV0aW5hPXRydWU=";
+        contentFrame.src = atob(encodedUrl);
         contentFrame.focus();
 
         turboSwitch.addEventListener("click", toggleTurbo);
@@ -453,7 +456,7 @@
                         toggleTurbo();
                         break;
                     case 'r':
-                        contentFrame.src = contentFrame.src;
+                        contentFrame.src = atob(encodedUrl); // Yeniden yüklerken şifreyi çöz
                         break;
                     case 'm':
                         contentFrame.contentWindow.postMessage({ 
