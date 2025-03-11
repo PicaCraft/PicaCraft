@@ -16,13 +16,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(45deg, #0a1d37, #1e3c72);
+            background: linear-gradient(135deg, #0a1d37, #1e3c72, #2a5298);
             font-family: 'Courier New', monospace;
             overflow: hidden;
             position: relative;
         }
 
-        /* Parçacık Efekti */
         .particles {
             position: absolute;
             top: 0;
@@ -35,100 +34,128 @@
 
         .particle {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background: rgba(0, 255, 0, 0.6);
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.9), transparent);
             border-radius: 50%;
-            animation: float 5s infinite ease-in-out;
+            animation: floatParticle 5s infinite ease-in-out, glowPulse 1.5s infinite alternate;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0) scale(1); opacity: 0.8; }
-            50% { transform: translateY(-100vh) scale(0.5); opacity: 0.2; }
-            100% { transform: translateY(-200vh) scale(0); opacity: 0; }
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-150vh) rotate(360deg); opacity: 0.5; }
+            100% { transform: translateY(-300vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Giriş Kutusu */
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 0, 1); }
+        }
+
         .login-container {
             position: relative;
-            width: 450px;
-            padding: 50px;
-            background: rgba(20, 20, 20, 0.85);
-            border: 2px solid #00ff00;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.2);
+            width: 550px;
+            padding: 70px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 4px solid #00ff00;
+            border-radius: 30px;
+            box-shadow: 0 0 80px rgba(0, 255, 0, 0.7), inset 0 0 25px rgba(0, 255, 0, 0.4);
             text-align: center;
-            transform: perspective(1000px) rotateX(10deg);
-            animation: containerEntrance 2s ease-out forwards;
+            transform: perspective(1500px) rotateX(20deg) scale(0.9);
+            animation: containerRise 3s ease-out forwards, floatHover 5s infinite ease-in-out;
             z-index: 1;
+            overflow: hidden;
         }
 
-        @keyframes containerEntrance {
-            0% { transform: perspective(1000px) rotateX(90deg); opacity: 0; }
-            100% { transform: perspective(1000px) rotateX(0deg); opacity: 1; }
+        @keyframes containerRise {
+            0% { transform: perspective(1500px) rotateX(100deg) scale(0.7); opacity: 0; }
+            100% { transform: perspective(1500px) rotateX(0deg) scale(1); opacity: 1; }
+        }
+
+        @keyframes floatHover {
+            0%, 100% { transform: perspective(1500px) rotateX(0deg) translateY(0); }
+            50% { transform: perspective(1500px) rotateX(0deg) translateY(-20px); }
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.2), transparent);
+            animation: rotateGlow 10s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         h1 {
             color: #00ff00;
-            font-size: 3em;
-            margin-bottom: 30px;
-            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.4);
-            animation: neonGlow 1.5s infinite alternate;
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.9), 0 0 40px rgba(0, 255, 0, 0.5);
+            animation: neonFlicker 2s infinite alternate;
         }
 
-        @keyframes neonGlow {
+        @keyframes neonFlicker {
             0% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.4); }
-            100% { text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 40px rgba(0, 255, 0, 0.6); }
+            50% { text-shadow: 0 0 25px rgba(0, 255, 0, 1), 0 0 50px rgba(0, 255, 0, 0.7); }
+            100% { text-shadow: 0 0 15px rgba(0, 255, 0, 0.9), 0 0 30px rgba(0, 255, 0, 0.6); }
         }
 
-        /* Şifre Giriş Alanı */
         .input-box {
             position: relative;
-            margin: 20px 0;
+            margin: 30px 0;
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00ff00;
-            border-radius: 10px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid #00ff00;
+            border-radius: 12px;
             color: #fff;
-            font-size: 1.2em;
+            font-size: 1.3em;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
         input[type="password"]:focus {
             border-color: #00cc00;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .input-box::before {
-            content: 'Şifre';
+            content: 'Şifreni Gir';
             position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #141414;
-            padding: 0 10px;
+            top: -12px;
+            left: 25px;
+            background: #0a0a0a;
+            padding: 0 12px;
             color: #00ff00;
-            font-size: 0.9em;
+            font-size: 1em;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* Buton */
         button {
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: #00ff00;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #000;
-            font-size: 1.3em;
+            font-size: 1.5em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
@@ -140,36 +167,37 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            transition: width 0.8s ease, height 0.8s ease;
         }
 
         button:hover::after {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
         }
 
         button:hover {
             background: #00cc00;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.9);
+            transform: translateY(-5px);
         }
 
-        /* Hata Mesajı */
         .error {
             color: #ff3333;
-            margin-top: 10px;
-            font-size: 1em;
+            margin-top: 15px;
+            font-size: 1.2em;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(10px);
         }
 
         .error.show {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Minecraft Teması için Ekstra Dekor */
         .decor {
             position: absolute;
             width: 100%;
@@ -177,32 +205,36 @@
             top: 0;
             left: 0;
             pointer-events: none;
+            z-index: 2;
         }
 
-        .decor::before,
-        .decor::after {
-            content: '';
+        .decor-item {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: url('https://via.placeholder.com/50?text=🗡️') no-repeat center;
-            animation: floatDecor 8s infinite ease-in-out;
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            animation: floatDecor 6s infinite ease-in-out;
         }
 
-        .decor::before { top: 10%; left: 10%; }
-        .decor::after { bottom: 10%; right: 10%; }
+        .decor-item.sword { background: url('https://via.placeholder.com/60?text=🗡️') no-repeat center; top: 10%; left: 10%; }
+        .decor-item.pickaxe { background: url('https://via.placeholder.com/60?text=⛏️') no-repeat center; bottom: 10%; right: 10%; }
+        .decor-item.creeper { background: url('https://via.placeholder.com/60?text=💀') no-repeat center; top: 20%; right: 15%; }
 
         @keyframes floatDecor {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+            100% { transform: translateY(0) rotate(0deg); }
         }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
     <div class="login-container">
-        <div class="decor"></div>
+        <div class="decor">
+            <div class="decor-item sword"></div>
+            <div class="decor-item pickaxe"></div>
+            <div class="decor-item creeper"></div>
+        </div>
         <h1>PicadorCraft</h1>
         <div class="input-box">
             <input type="password" id="password" placeholder="Şifreni Gir" required>
@@ -212,9 +244,8 @@
     </div>
 
     <script>
-        // Parçacık Efekti
         const particleContainer = document.getElementById('particles');
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 100; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.left = Math.random() * 100 + 'vw';
@@ -222,30 +253,45 @@
             particleContainer.appendChild(particle);
         }
 
-        // Şifre Kontrolü
         function checkPassword() {
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('error-msg');
             const correctPassword = 'picadorcraft88';
+            const loginContainer = document.querySelector('.login-container');
 
             if (password === correctPassword) {
-                window.location.href = 'oyun.html';
+                loginContainer.style.animation = 'successExit 1s ease forwards';
+                setTimeout(() => {
+                    window.location.href = 'picadorcraft/oyun';
+                }, 1000);
             } else {
                 errorMsg.classList.add('show');
                 document.getElementById('password').style.borderColor = '#ff3333';
+                loginContainer.style.transform = 'perspective(1500px) rotateX(0deg) scale(1.05)';
+                loginContainer.style.boxShadow = '0 0 80px rgba(255, 0, 0, 0.7)';
                 setTimeout(() => {
                     errorMsg.classList.remove('show');
                     document.getElementById('password').style.borderColor = '#00ff00';
+                    loginContainer.style.transform = 'perspective(1500px) rotateX(0deg) scale(1)';
+                    loginContainer.style.boxShadow = '0 0 80px rgba(0, 255, 0, 0.7), inset 0 0 25px rgba(0, 255, 0, 0.4)';
                 }, 2000);
             }
         }
 
-        // Enter tuşu ile giriş
         document.getElementById('password').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 checkPassword();
             }
         });
+
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes successExit {
+                0% { transform: perspective(1500px) rotateX(0deg) scale(1); opacity: 1; }
+                100% { transform: perspective(1500px) rotateX(-90deg) scale(0.8); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(styleSheet);
     </script>
 </body>
 </html>
