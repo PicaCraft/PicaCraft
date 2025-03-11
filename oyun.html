@@ -338,7 +338,7 @@
     <div id="turboAnimation">TURBO ON!</div>
 
     <div id="container">
-        <iframe id="gameFrame" src="" allow="keyboard" loading="lazy"></iframe>
+        <iframe id="gameFrame" src="eagler.html" allow="keyboard" loading="lazy"></iframe>
     </div>
 
     <div id="shortcuts">
@@ -370,13 +370,7 @@
         ];
         let currentTheme = 0;
 
-        // Proxy ve Base64 ile şifrelenmiş URL tanımlama
-        const proxyBase = "https://hide.me/en/proxy?url=";
-        const encodedUrl = "aHR0cHM6Ly9lYWdsZXJjcmFmdC5xMTN4LmNvbS8xLjgtd2FzbS8/cmV0aW5hPXRydWU="; // https://eaglercraft.q13x.com/1.8-wasm/?retina=true
-        const targetUrl = proxyBase + encodeURIComponent(atob(encodedUrl));
-
-        // iframe'e proxy üzerinden URL'yi yükle
-        gameFrame.src = targetUrl;
+        // iframe'e odaklan
         gameFrame.focus();
 
         turboSwitch.addEventListener("click", toggleTurbo);
@@ -431,17 +425,22 @@
 
         document.addEventListener("keydown", function(event) {
             const shortcutKeys = ['f', 't', 'r', 'm', 'q', 'k'];
+            
+            // Kısayol tuşları değilse, klavye olayını iframe'e ilet
             if (!shortcutKeys.includes(event.key.toLowerCase()) || (!event.ctrlKey && !event.shiftKey)) {
                 const keyEvent = new KeyboardEvent("keydown", {
                     key: event.key,
                     code: event.code,
                     keyCode: event.keyCode,
                     which: event.which,
+                    ctrlKey: event.ctrlKey,
+                    shiftKey: event.shiftKey,
+                    altKey: event.altKey,
                     bubbles: true
                 });
                 gameFrame.contentWindow.dispatchEvent(keyEvent);
             } else {
-                event.preventDefault();
+                event.preventDefault(); // Kısayol tuşlarının varsayılan davranışını engelle
             }
 
             keyDisplay.innerText = (event.shiftKey ? "Shift + " : event.ctrlKey ? "Ctrl + " : "") + event.key.toUpperCase();
@@ -459,7 +458,7 @@
                         toggleTurbo();
                         break;
                     case 'r':
-                        gameFrame.src = targetUrl; // Proxy ile yeniden yükle
+                        gameFrame.src = "eagler.html"; // Yerel dosyayı yeniden yükle
                         break;
                     case 'm':
                         gameFrame.contentWindow.postMessage({ 
