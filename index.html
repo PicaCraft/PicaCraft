@@ -3,55 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PicadorCraft - Giriş</title>
+    <title>PicadorCraft - Giriş Kapısı</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{height:100vh;display:flex;justify-content:center;align-items:center;background:#0a0f1b;overflow:hidden;perspective:1000px;}
-        .bg{position:absolute;width:100%;height:100%;background:radial-gradient(circle,#1e3c72,#0a0f1b);animation:bgPulse 10s infinite;}
-        @keyframes bgPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.5);}}
-        .particles{position:absolute;width:100%;height:100%;z-index:1;}
-        .particle{position:absolute;width:8px;height:8px;background:#00ff00;border-radius:50%;animation:particleRise 4s infinite,particleSpin 2s infinite;}
-        @keyframes particleRise{0%{transform:translateY(100vh) scale(0);opacity:0;}50%{opacity:1;}100%{transform:translateY(-100vh) scale(1);opacity:0;}}
-        @keyframes particleSpin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-        .container{position:relative;width:500px;padding:60px;background:rgba(10,10,10,0.9);border:3px solid #00ff00;border-radius:25px;box-shadow:0 0 50px #00ff00,0 0 100px #00ff0033;transform-style:preserve-3d;animation:containerFloat 5s infinite ease-in-out,zIndexFix 0.1s forwards;}
-        @keyframes containerFloat{0%,100%{transform:translateZ(0) rotateX(5deg);}50%{transform:translateZ(50px) rotateX(-5deg);}}
-        @keyframes zIndexFix{to{z-index:2;}}
-        h1{color:#00ff00;font-size:3.5em;text-shadow:0 0 20px #00ff00,0 0 40px #00ff0066;animation:titleGlow 1s infinite alternate,titleBounce 3s infinite;}
-        @keyframes titleGlow{0%{text-shadow:0 0 20px #00ff00,0 0 40px #00ff0066;}100%{text-shadow:0 0 30px #00ff00,0 0 60px #00ff00;}}
-        @keyframes titleBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-15px);}}
-        .input-wrapper{position:relative;margin:30px 0;perspective:500px;}
-        input[type="password"]{width:100%;padding:20px;background:rgba(255,255,255,0.1);border:2px solid #00ff00;border-radius:15px;color:#fff;font-size:1.5em;outline:none;transition:all 0.5s;transform-style:preserve-3d;}
-        input[type="password"]:focus{transform:rotateX(10deg) scale(1.1);border-color:#00cc00;box-shadow:0 0 25px #00ff00;}
-        .input-wrapper::before{content:'Şifre';position:absolute;top:-15px;left:25px;padding:0 15px;background:#0a0f1b;color:#00ff00;font-size:1em;animation:labelFloat 2s infinite;}
-        @keyframes labelFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-        button{position:relative;width:100%;padding:20px;background:#00ff00;border:none;border-radius:15px;color:#000;font-size:1.5em;font-weight:bold;cursor:pointer;overflow:hidden;transition:all 0.5s;transform-style:preserve-3d;}
-        button::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,0.5);border-radius:50%;transform:translate(-50%,-50%);transition:all 0.8s;}
-        button:hover::after{width:500px;height:500px;}
-        button:hover{transform:rotateY(10deg) scale(1.1);background:#00cc00;box-shadow:0 0 30px #00ff00;}
-        .error{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);color:#ff3333;font-size:1.2em;opacity:0;transition:all 0.5s;}
-        .error.show{opacity:1;animation:errorShake 0.5s;}
-        @keyframes errorShake{0%,100%{transform:translateX(-50%);}25%{transform:translateX(calc(-50% - 10px));}75%{transform:translateX(calc(-50% + 10px));}}
-        .cube{position:absolute;width:50px;height:50px;border:2px solid #00ff00;transform-style:preserve-3d;animation:cubeSpin 6s infinite linear;}
-        @keyframes cubeSpin{0%{transform:rotateX(0deg) rotateY(0deg);}100%{transform:rotateX(360deg) rotateY(360deg);}}
-        .cube:nth-child(1){top:-100px;left:-100px;}
-        .cube:nth-child(2){bottom:-100px;right:-100px;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #0a1d37, #1e3c72);
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Parçacık Efekti */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(0, 255, 0, 0.6);
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            50% { transform: translateY(-100vh) scale(0.5); opacity: 0.2; }
+            100% { transform: translateY(-200vh) scale(0); opacity: 0; }
+        }
+
+        /* Giriş Kutusu */
+        .login-container {
+            position: relative;
+            width: 450px;
+            padding: 50px;
+            background: rgba(20, 20, 20, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.5), inset 0 0 15px rgba(0, 255, 0, 0.2);
+            text-align: center;
+            transform: perspective(1000px) rotateX(10deg);
+            animation: containerEntrance 2s ease-out forwards;
+            z-index: 1;
+        }
+
+        @keyframes containerEntrance {
+            0% { transform: perspective(1000px) rotateX(90deg); opacity: 0; }
+            100% { transform: perspective(1000px) rotateX(0deg); opacity: 1; }
+        }
+
+        h1 {
+            color: #00ff00;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.4);
+            animation: neonGlow 1.5s infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.4); }
+            100% { text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 40px rgba(0, 255, 0, 0.6); }
+        }
+
+        /* Şifre Giriş Alanı */
+        .input-box {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2em;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="password"]:focus {
+            border-color: #00cc00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        .input-box::before {
+            content: 'Şifre';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #141414;
+            padding: 0 10px;
+            color: #00ff00;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        /* Buton */
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #00ff00;
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        button:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        /* Hata Mesajı */
+        .error {
+            color: #ff3333;
+            margin-top: 10px;
+            font-size: 1em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error.show {
+            opacity: 1;
+        }
+
+        /* Minecraft Teması için Ekstra Dekor */
+        .decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .decor::before,
+        .decor::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: url('https://via.placeholder.com/50?text=🗡️') no-repeat center;
+            animation: floatDecor 8s infinite ease-in-out;
+        }
+
+        .decor::before { top: 10%; left: 10%; }
+        .decor::after { bottom: 10%; right: 10%; }
+
+        @keyframes floatDecor {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="bg"></div>
     <div class="particles" id="particles"></div>
-    <div class="container">
-        <div class="cube"></div>
-        <div class="cube"></div>
+    <div class="login-container">
+        <div class="decor"></div>
         <h1>PicadorCraft</h1>
-        <div class="input-wrapper">
-            <input type="password" id="password" placeholder="Şifreyi Girin">
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Şifreni Gir" required>
         </div>
         <button onclick="checkPassword()">Giriş Yap</button>
-        <div class="error" id="error">Yanlış Şifre!</div>
+        <div class="error" id="error-msg">Yanlış Şifre!</div>
     </div>
+
     <script>
-        const correctPassword="picadorcraft88";function checkPassword(){const e=document.getElementById("password").value,t=document.getElementById("error");e===correctPassword?window.location.href="oyun.html":(t.classList.add("show"),setTimeout(()=>{t.classList.remove("show")},2e3))}function createParticle(){const e=document.createElement("div");e.classList.add("particle"),e.style.left=Math.random()*100+"vw",document.getElementById("particles").appendChild(e),setTimeout(()=>{e.remove()},4e3)}setInterval(createParticle,100),document.getElementById("password").addEventListener("keypress",function(e){"Enter"===e.key&&checkPassword()});
+        // Parçacık Efekti
+        const particleContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particleContainer.appendChild(particle);
+        }
+
+        // Şifre Kontrolü
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const correctPassword = 'picadorcraft88';
+
+            if (password === correctPassword) {
+                window.location.href = 'oyun.html';
+            } else {
+                errorMsg.classList.add('show');
+                document.getElementById('password').style.borderColor = '#ff3333';
+                setTimeout(() => {
+                    errorMsg.classList.remove('show');
+                    document.getElementById('password').style.borderColor = '#00ff00';
+                }, 2000);
+            }
+        }
+
+        // Enter tuşu ile giriş
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
     </script>
 </body>
 </html>
