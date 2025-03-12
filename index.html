@@ -95,19 +95,6 @@
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
         }
 
-        .input-box::before {
-            content: 'Erişim Kodu';
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: #0d0d1a;
-            padding: 0 10px;
-            color: #00ffff;
-            font-size: 1em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
         .eye-icon {
             position: absolute;
             right: 15px;
@@ -201,7 +188,7 @@
                 loginContainer.style.transition = 'opacity 0.5s ease';
                 loginContainer.style.opacity = '0';
                 setTimeout(() => {
-                    window.location.href = 'oyun.html';
+                    window.location.href = 'game.html';
                 }, 500);
             } else {
                 errorMsg.classList.add('show');
@@ -223,5 +210,5 @@
             }
         });
     </script>
-</body>
+</body> 
 </html>
