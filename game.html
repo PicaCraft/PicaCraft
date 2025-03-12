@@ -251,6 +251,10 @@
             EaglerCraft 1.5.2
             <div class="version-text">Klasik Sürüm</div>
         </button>
+        <button class="game-button" onclick="startLoading('pacman.html')">
+            Pac-Man
+            <div class="version-text">Klasik Oyun</div>
+        </button>
         <div class="tooltip">1.5.2 Sürümü Daha Eskidir.</div>
     </div>
 
@@ -271,6 +275,7 @@
         document.addEventListener("keydown", (e) => {
             if (e.key === "1") startLoading('oyun.html');
             if (e.key === "2") startLoading('eagler.1.5.2.html');
+            if (e.key === "3") startLoading('pacman.html');
         });
     </script>
 
