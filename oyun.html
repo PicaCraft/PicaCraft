@@ -113,17 +113,13 @@
             padding: 0 20px;
             z-index: 1000;
         }
-        #turboSwitch, #rgbSwitch, #fullscreenBtn {
+        #rgbSwitch, #fullscreenBtn {
             padding: 15px 30px;
             font-size: 20px;
             font-weight: 700;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.4s ease;
-        }
-        #turboSwitch {
-            background: linear-gradient(135deg, var(--color2, #ff0000), #ff4444);
-            box-shadow: 0 0 20px var(--color2, rgba(255, 0, 0, 0.8));
         }
         #rgbSwitch {
             background: linear-gradient(135deg, #ff00ff, #00ffff);
@@ -133,18 +129,16 @@
             background: linear-gradient(135deg, var(--color1, #00ff00), #44ff44);
             box-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.8));
         }
-        body.performance-mode #turboSwitch,
         body.performance-mode #rgbSwitch,
         body.performance-mode #fullscreenBtn {
             box-shadow: none;
             background: #333;
             color: #fff;
         }
-        #turboSwitch:hover, #rgbSwitch:hover, #fullscreenBtn:hover {
+        #rgbSwitch:hover, #fullscreenBtn:hover {
             animation: buttonPulse 0.6s infinite alternate;
             box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
         }
-        body.performance-mode #turboSwitch:hover,
         body.performance-mode #rgbSwitch:hover,
         body.performance-mode #fullscreenBtn:hover {
             animation: none;
@@ -177,41 +171,6 @@
         @keyframes keyPop {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
-        }
-        #turboAnimation {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(45deg, var(--color2, #ff0000), #ff4444);
-            padding: 50px 100px;
-            font-size: 60px;
-            font-weight: 900;
-            border-radius: 25px;
-            display: none;
-            z-index: 2000;
-            box-shadow: 0 0 80px var(--color2, rgba(255, 0, 0, 0.9));
-            animation: turboEpicBlast 2s ease-out forwards;
-            text-shadow: 0 0 20px #fff, 0 0 40px var(--color2, #ff0000);
-        }
-        body.performance-mode #turboAnimation {
-            background: #333;
-            box-shadow: none;
-            text-shadow: none;
-            animation: turboSimpleBlast 1s ease-out forwards;
-        }
-        @keyframes turboEpicBlast {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); opacity: 0; filter: blur(10px); }
-            20% { transform: translate(-50%, -50%) scale(2) rotate(720deg); opacity: 1; filter: blur(0px); }
-            40% { transform: translate(-50%, -50%) scale(1.5) rotate(1440deg) skew(10deg, 10deg); box-shadow: 0 0 120px var(--color2, rgba(255, 0, 0, 1)); }
-            60% { transform: translate(-50%, -50%) scale(1.8) rotate(2160deg) skew(-10deg, -10deg); opacity: 1; filter: brightness(2); }
-            80% { transform: translate(-50%, -50%) scale(1.2) rotate(2880deg); opacity: 0.8; filter: brightness(1.5); }
-            100% { transform: translate(-50%, -50%) scale(0) rotate(3600deg); opacity: 0; filter: blur(20px); }
-        }
-        @keyframes turboSimpleBlast {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
         }
         #shortcuts {
             margin: 60px auto;
@@ -287,20 +246,17 @@
 </head>
 <body>
     <div id="buttonContainer">
-        <div id="turboSwitch">Turbo Mod: Kapalı</div>
         <div id="rgbSwitch">RGB Mod</div>
         <div id="fullscreenBtn">Tam Ekran</div>
     </div>
     <h1>PicadorCraft</h1>
     <div id="keyDisplay"></div>
-    <div id="turboAnimation">TURBO ON!</div>
     <div id="container">
         <iframe id="gameFrame" src="eagler.html" allow="keyboard" loading="lazy"></iframe>
     </div>
     <div id="shortcuts">
         <h2>Kısayollar</h2>
         <p><strong>Ctrl + F</strong> - Tam Ekran Modu</p>
-        <p><strong>Ctrl + T</strong> - Turbo Modu Aç/Kapat (8x Performans)</p>
         <p><strong>Ctrl + R</strong> - Oyunu Yeniden Yükle</p>
         <p><strong>Ctrl + M</strong> - Ses Aç/Kapat</p>
         <p><strong>Ctrl + Q</strong> - Hızlı Çıkış</p>
@@ -308,18 +264,12 @@
     </div>
 
     <script>
-        let turboActive = false;
         let performanceMode = false;
         const gameFrame = document.getElementById("gameFrame");
-        const turboSwitch = document.getElementById("turboSwitch");
         const rgbSwitch = document.getElementById("rgbSwitch");
         const fullscreenBtn = document.getElementById("fullscreenBtn");
         const keyDisplay = document.getElementById("keyDisplay");
         const container = document.getElementById("container");
-        const turboAnimation = document.getElementById("turboAnimation");
-
-        const baseFPS = 90;
-        const turboFPS = baseFPS * 2;
 
         const colorThemes = [
             { color1: "#00ff00", color2: "#ff0000" },
@@ -331,25 +281,8 @@
 
         gameFrame.focus();
 
-        turboSwitch.addEventListener("click", toggleTurbo);
         rgbSwitch.addEventListener("click", changeRGB);
         fullscreenBtn.addEventListener("click", goFullscreen);
-
-        function toggleTurbo() {
-            turboActive = !turboActive;
-            turboSwitch.innerText = "Turbo Mod: " + (turboActive ? "Açık" : "Kapalı");
-            if (turboActive) {
-                turboAnimation.style.display = "block";
-                setTimeout(() => turboAnimation.style.display = "none", 2000);
-            }
-            gameFrame.contentWindow.postMessage({ 
-                action: "toggleTurbo", 
-                active: turboActive,
-                performanceBoost: 8,
-                frameRate: turboActive ? turboFPS : baseFPS,
-                renderingQuality: turboActive ? "high" : "medium"
-            }, "*");
-        }
 
         function changeRGB() {
             if (!performanceMode) {
@@ -357,7 +290,6 @@
                 const { color1, color2 } = colorThemes[currentTheme];
                 document.documentElement.style.setProperty('--color1', color1);
                 document.documentElement.style.setProperty('--color2', color2);
-                turboSwitch.style.background = `linear-gradient(135deg, ${color2}, ${color2}aa)`;
                 fullscreenBtn.style.background = `linear-gradient(135deg, ${color1}, ${color1}aa)`;
             }
         }
@@ -386,9 +318,6 @@
                     switch(event.key.toLowerCase()) {
                         case 'f':
                             goFullscreen();
-                            break;
-                        case 't':
-                            toggleTurbo();
                             break;
                         case 'r':
                             gameFrame.src = "eagler.html";
@@ -429,20 +358,17 @@
             if (performanceMode) {
                 document.documentElement.style.setProperty('--color1', '#fff');
                 document.documentElement.style.setProperty('--color2', '#fff');
-                turboSwitch.style.background = '#333';
                 rgbSwitch.style.background = '#333';
                 fullscreenBtn.style.background = '#333';
             } else {
                 const { color1, color2 } = colorThemes[currentTheme];
                 document.documentElement.style.setProperty('--color1', color1);
                 document.documentElement.style.setProperty('--color2', color2);
-                turboSwitch.style.background = `linear-gradient(135deg, ${color2}, ${color2}aa)`;
                 rgbSwitch.style.background = 'linear-gradient(135deg, #ff00ff, #00ffff)';
                 fullscreenBtn.style.background = `linear-gradient(135deg, ${color1}, ${color1}aa)`;
             }
             gameFrame.contentWindow.postMessage({
                 action: "setPerformance",
-                frameRate: turboActive ? turboFPS : baseFPS,
                 renderingQuality: performanceMode ? "low" : "medium"
             }, "*");
         }
@@ -453,7 +379,6 @@
             gameFrame.focus();
             gameFrame.contentWindow.postMessage({
                 action: "setPerformance",
-                frameRate: baseFPS,
                 renderingQuality: "medium"
             }, "*");
         });
@@ -461,13 +386,6 @@
         document.addEventListener("fullscreenchange", () => {
             fullscreenBtn.innerText = document.fullscreenElement ? "Tam Ekrandan Çık" : "Tam Ekran";
             gameFrame.focus();
-        });
-
-        window.addEventListener("message", (event) => {
-            if (event.data.action === "turboStatus") {
-                turboActive = event.data.active;
-                turboSwitch.innerText = "Turbo Mod: " + (turboActive ? "Açık" : "Kapalı");
-            }
         });
     </script>
 </body>
