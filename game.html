@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicadorCraft</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        
+        body {
+            background: black;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, red, blue, lime, yellow);
+            background-size: 400% 400%;
+            animation: backgroundAnimation 8s infinite alternate ease-in-out;
+            filter: blur(80px);
+            opacity: 0.7;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            width: 400px;
+            z-index: 10;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 20px cyan;
+            animation: glowText 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes glowText {
+            0% { text-shadow: 0 0 10px cyan; }
+            100% { text-shadow: 0 0 30px cyan; }
+        }
+
+        .game-button {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+            background: linear-gradient(90deg, cyan, blue);
+            box-shadow: 0 0 15px cyan;
+            border: none;
+            transform-style: preserve-3d;
+        }
+
+        .game-button:hover {
+            transform: scale(1.1) rotateX(10deg) rotateY(-10deg);
+            box-shadow: 0 0 25px cyan;
+            background: linear-gradient(90deg, blue, cyan);
+        }
+
+        .game-button:active {
+            transform: scale(0.95);
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 22px;
+            display: none;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="container" id="parallaxContainer">
+        <div class="title">PicadorCraft</div>
+        <button class="game-button" onclick="startLoading('oyun.html')">EaglerCraft</button>
+        <button class="game-button" onclick="startLoading('happy.html')">Happy Wheels</button>
+    </div>
+
+    <div class="loading-screen" id="loadingScreen">
+        Yükleniyor...
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        function startLoading(url) {
+            document.getElementById('loadingScreen').style.display = 'flex';
+            setTimeout(() => { window.location.href = url; }, 2000);
+        }
+
+        document.addEventListener("mousemove", (e) => {
+            let x = (window.innerWidth / 2 - e.pageX) / 25;
+            let y = (window.innerHeight / 2 - e.pageY) / 25;
+            document.getElementById('parallaxContainer').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+    </script>
+
+</body>
+</html>
