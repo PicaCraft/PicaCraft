@@ -251,6 +251,10 @@
             EaglerCraft 1.5.2
             <div class="version-text">Klasik Sürüm</div>
         </button>
+        <button class="game-button" onclick="startLoading('slitherio.html')">
+            Slither.io
+            <div class="version-text">Klasik Oyun</div>
+        </button>
         <button class="game-button" onclick="startLoading('pacman.html')">
             Pac-Man
             <div class="version-text">Klasik Oyun</div>
@@ -275,7 +279,8 @@
         document.addEventListener("keydown", (e) => {
             if (e.key === "1") startLoading('oyun.html');
             if (e.key === "2") startLoading('eagler.1.5.2.html');
-            if (e.key === "3") startLoading('pacman.html');
+            if (e.key === "3") startLoading('slitherio.html');
+            if (e.key === "4") startLoading('pacman.html');
         });
     </script>
 
