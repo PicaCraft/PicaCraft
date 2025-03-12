@@ -5,87 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicadorCraft</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Orbitron', sans-serif; 
+        }
         
         body {
-            background: black;
+            background: #0a0a0a;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             position: relative;
-            perspective: 1000px;
+            transition: background 0.5s ease;
         }
 
         .background {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, red, blue, lime, yellow);
-            background-size: 400% 400%;
-            animation: backgroundAnimation 8s infinite alternate ease-in-out;
-            filter: blur(80px);
-            opacity: 0.7;
+            background: linear-gradient(135deg, #ff007a, #00d4ff, #00ff7f, #ffeb3b);
+            background-size: 800% 800%;
+            animation: backgroundAnimation 12s infinite ease-in-out;
+            filter: blur(120px) brightness(1.2);
+            opacity: 0.65;
+            z-index: -1;
         }
 
         @keyframes backgroundAnimation {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 40px;
-            border-radius: 15px;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.95), rgba(0, 0, 0, 0.9));
+            padding: 60px 40px;
+            border-radius: 25px;
             text-align: center;
-            width: 400px;
+            width: 500px;
             z-index: 10;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-            transform-style: preserve-3d;
-            transition: transform 0.3s;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.6), 
+                        0 0 100px rgba(255, 0, 255, 0.4), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.25), transparent);
+            animation: pulseGlow 8s infinite ease-in-out;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 4s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .title {
-            font-size: 26px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 0 20px cyan;
-            animation: glowText 1.5s infinite alternate ease-in-out;
+            font-size: 40px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 15px #00ffff, 
+                        0 0 30px #00ffff, 
+                        0 0 50px #ff00ff;
+            animation: glowText 2s infinite alternate ease-in-out;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .title::after {
+            content: 'PicadorCraft';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+            animation: neonFlicker 3s infinite alternate;
+            z-index: -1;
         }
 
         @keyframes glowText {
-            0% { text-shadow: 0 0 10px cyan; }
-            100% { text-shadow: 0 0 30px cyan; }
+            0% { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #ff00ff; }
+            100% { text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #ff00ff; }
+        }
+
+        @keyframes neonFlicker {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
         }
 
         .game-button {
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
+            padding: 20px 35px;
+            margin: 20px 0;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
             text-transform: uppercase;
             cursor: pointer;
             position: relative;
-            transition: 0.3s;
-            background: linear-gradient(90deg, cyan, blue);
-            box-shadow: 0 0 15px cyan;
+            transition: all 0.4s ease;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 
+                        0 0 40px rgba(255, 0, 255, 0.6);
             border: none;
-            transform-style: preserve-3d;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .game-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shine 2.5s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
         }
 
         .game-button:hover {
-            transform: scale(1.1) rotateX(10deg) rotateY(-10deg);
-            box-shadow: 0 0 25px cyan;
-            background: linear-gradient(90deg, blue, cyan);
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 1), 
+                        0 0 60px rgba(255, 0, 255, 0.8);
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
         }
 
         .game-button:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+        }
+
+        .version-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+            text-shadow: 0 0 5px #00ffff;
+            font-weight: 400;
         }
 
         .loading-screen {
@@ -94,29 +192,48 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.98);
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            color: white;
-            font-size: 22px;
+            color: #fff;
+            font-size: 32px;
+            font-weight: 700;
+            z-index: 1000;
             display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(255, 255, 255, 0.3);
-            border-top: 6px solid white;
+            width: 100px;
+            height: 100px;
+            border: 10px solid rgba(255, 255, 255, 0.2);
+            border-top: 10px solid #00ffff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-top: 20px;
+            margin-top: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-shadow: 0 0 5px #00ffff;
         }
     </style>
 </head>
@@ -124,10 +241,17 @@
 
     <div class="background"></div>
 
-    <div class="container" id="parallaxContainer">
+    <div class="container">
         <div class="title">PicadorCraft</div>
-        <button class="game-button" onclick="startLoading('oyun.html')">EaglerCraft</button>
-        <button class="game-button" onclick="startLoading('happy.html')">Happy Wheels</button>
+        <button class="game-button" onclick="startLoading('oyun.html')">
+            EaglerCraft 1.8.8
+            <div class="version-text">Son Sürüm</div>
+        </button>
+        <button class="game-button" onclick="startLoading('eagler.1.5.2.html')">
+            EaglerCraft 1.5.2
+            <div class="version-text">Klasik Sürüm</div>
+        </button>
+        <div class="tooltip">1.5.2 Sürümü Daha Eskidir.</div>
     </div>
 
     <div class="loading-screen" id="loadingScreen">
@@ -137,14 +261,16 @@
 
     <script>
         function startLoading(url) {
-            document.getElementById('loadingScreen').style.display = 'flex';
-            setTimeout(() => { window.location.href = url; }, 2000);
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.style.display = 'flex';
+            setTimeout(() => { 
+                window.location.href = url; 
+            }, 2000);
         }
 
-        document.addEventListener("mousemove", (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 25;
-            let y = (window.innerHeight / 2 - e.pageY) / 25;
-            document.getElementById('parallaxContainer').style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "1") startLoading('oyun.html');
+            if (e.key === "2") startLoading('eagler.1.5.2.html');
         });
     </script>
 
