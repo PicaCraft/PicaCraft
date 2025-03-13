@@ -25,6 +25,27 @@
     <script>
         const gameFrame = document.getElementById("gameFrame");
         gameFrame.focus();
+
+        // F11 tuşuna basıldığında tam ekran yap
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "F11") {
+                event.preventDefault(); // Tarayıcının varsayılan F11 davranışını engelle
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen()
+                        .then(() => gameFrame.focus())
+                        .catch(err => console.error("Tam ekran hatası:", err));
+                } else {
+                    document.exitFullscreen()
+                        .then(() => gameFrame.focus())
+                        .catch(err => console.error("Tam ekrandan çıkış hatası:", err));
+                }
+            }
+        });
+
+        // Tam ekran değiştiğinde iframe'e odaklan
+        document.addEventListener("fullscreenchange", () => {
+            gameFrame.focus();
+        });
     </script>
 </body>
 </html>
