@@ -14,16 +14,16 @@
             font-family: 'Orbitron', sans-serif;
         }
         body {
-            background: radial-gradient(circle at center, #1a1a1a, #000);
+            background: #111;
             color: #fff;
             min-height: 100vh;
-            padding: 50px;
-            overflow-y: auto;
+            padding: 40px;
+            overflow: hidden;
             position: relative;
-            transition: background 0.5s ease;
+            transition: background 0.3s ease;
         }
         body.performance-mode {
-            background: #000 !important;
+            background: #000;
         }
         body::before {
             content: '';
@@ -33,9 +33,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(45deg, var(--color1, rgba(0, 255, 0, 0.1)), var(--color2, rgba(255, 0, 0, 0.1)));
-            animation: gradientShift 20s infinite linear;
             z-index: -1;
-            will-change: transform;
+            animation: gradientShift 15s infinite linear;
         }
         body.performance-mode::before {
             display: none;
@@ -45,15 +44,15 @@
             100% { transform: rotate(360deg); }
         }
         h1 {
-            font-size: 80px;
+            font-size: 70px;
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: linear-gradient(45deg, var(--color1, #0f0), var(--color2, #ff0));
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: 0 0 30px var(--color1, rgba(0, 255, 0, 0.8)), 0 0 60px var(--color2, rgba(255, 255, 0, 0.5));
-            animation: titleGlow 1.5s ease-in-out infinite alternate;
+            text-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.6));
+            animation: titleGlow 2s ease-in-out infinite alternate;
         }
         body.performance-mode h1 {
             text-shadow: none;
@@ -62,185 +61,129 @@
             color: #fff;
         }
         @keyframes titleGlow {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(1.05); filter: brightness(1.5); }
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.3); }
         }
         #container {
             width: 95%;
             max-width: 1600px;
-            height: 85vh;
+            height: 80vh;
             margin: 0 auto;
-            position: relative;
-            border: 8px solid transparent;
+            border: 4px solid transparent;
             border-image: linear-gradient(45deg, var(--color1, #0f0), var(--color2, #ff0)) 1;
-            border-radius: 25px;
-            box-shadow: 0 0 80px var(--color1, rgba(0, 255, 0, 0.7));
+            border-radius: 15px;
+            box-shadow: 0 0 40px var(--color1, rgba(0, 255, 0, 0.5));
             overflow: hidden;
             background: #000;
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border-image 0.5s ease;
+            transition: box-shadow 0.3s ease;
         }
         body.performance-mode #container {
             box-shadow: none;
-            border: 2px solid #fff;
+            border: 1px solid #fff;
             border-image: none;
         }
         #container:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 0 120px var(--color1, rgba(0, 255, 0, 0.9));
+            box-shadow: 0 0 60px var(--color1, rgba(0, 255, 0, 0.7));
         }
         body.performance-mode #container:hover {
-            transform: none;
             box-shadow: none;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            image-rendering: optimizeSpeed;
-            filter: contrast(1.1) brightness(1.05);
-            will-change: filter;
+            image-rendering: pixelated;
         }
         body.performance-mode iframe {
+            image-rendering: optimizeSpeed;
             filter: none;
         }
         #buttonContainer {
             position: fixed;
-            top: 20px;
-            left: 0;
-            right: 0;
+            top: 10px;
+            left: 10px;
+            right: 10px;
             display: flex;
             justify-content: space-between;
-            padding: 0 20px;
             z-index: 1000;
         }
         #rgbSwitch, #fullscreenBtn {
-            padding: 15px 30px;
-            font-size: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
         #rgbSwitch {
             background: linear-gradient(135deg, #ff00ff, #00ffff);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
         #fullscreenBtn {
             background: linear-gradient(135deg, var(--color1, #00ff00), #44ff44);
-            box-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.8));
+            box-shadow: 0 0 15px var(--color1, rgba(0, 255, 0, 0.5));
         }
         body.performance-mode #rgbSwitch,
         body.performance-mode #fullscreenBtn {
             box-shadow: none;
-            background: #333;
+            background: #444;
             color: #fff;
         }
         #rgbSwitch:hover, #fullscreenBtn:hover {
-            animation: buttonPulse 0.6s infinite alternate;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
-        }
-        body.performance-mode #rgbSwitch:hover,
-        body.performance-mode #fullscreenBtn:hover {
-            animation: none;
-            box-shadow: none;
-            background: #555;
-        }
-        @keyframes buttonPulse {
-            0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
-            50% { transform: scale(1.2) rotate(10deg); filter: brightness(1.5); }
-            100% { transform: scale(1.15) rotate(5deg); filter: brightness(1.3); }
+            filter: brightness(1.2);
         }
         #keyDisplay {
             position: fixed;
-            top: 90px;
-            left: 20px;
+            top: 60px;
+            left: 10px;
             background: linear-gradient(45deg, var(--color1, #0f0), var(--color2, #ff0));
-            padding: 15px 25px;
-            font-size: 28px;
+            padding: 10px 20px;
+            font-size: 24px;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 8px;
             display: none;
             z-index: 1000;
-            box-shadow: 0 0 30px var(--color1, rgba(0, 255, 0, 0.8));
-            animation: keyPop 0.5s ease-out;
+            box-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.6));
         }
         body.performance-mode #keyDisplay {
-            background: #333;
+            background: #444;
             box-shadow: none;
         }
-        @keyframes keyPop {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
         #shortcuts {
-            margin: 60px auto;
-            max-width: 1200px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            box-shadow: 0 0 40px var(--color1, rgba(0, 255, 0, 0.4));
-            position: relative;
-            overflow: hidden;
-            transition: box-shadow 0.5s ease, background 0.5s ease;
+            margin: 40px auto;
+            max-width: 1000px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 0 30px var(--color1, rgba(0, 255, 0, 0.3));
         }
         body.performance-mode #shortcuts {
             background: #222;
             box-shadow: none;
         }
-        #shortcuts::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--color1, rgba(0, 255, 0, 0.2)), transparent);
-            animation: pulseGlow 8s infinite linear;
-        }
-        body.performance-mode #shortcuts::before {
-            display: none;
-        }
-        @keyframes pulseGlow {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
         #shortcuts h2 {
             color: var(--color1, #0f0);
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.8));
-            position: relative;
-            z-index: 1;
+            margin-bottom: 20px;
         }
         body.performance-mode #shortcuts h2 {
             color: #fff;
-            text-shadow: none;
         }
         #shortcuts p {
-            margin: 20px 0;
-            font-size: 20px;
-            padding: 15px;
-            background: linear-gradient(90deg, var(--color1, rgba(0, 255, 0, 0.1)), var(--color2, rgba(255, 255, 0, 0.1)));
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
+            margin: 15px 0;
+            font-size: 18px;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
         body.performance-mode #shortcuts p {
             background: #333;
-            color: #fff;
         }
         #shortcuts p:hover {
-            transform: scale(1.05) translateX(20px);
-            background: linear-gradient(90deg, var(--color1, rgba(0, 255, 0, 0.3)), var(--color2, rgba(255, 255, 0, 0.3)));
-            box-shadow: 0 0 20px var(--color1, rgba(0, 255, 0, 0.6));
-        }
-        body.performance-mode #shortcuts p:hover {
-            transform: none;
-            background: #555;
-            box-shadow: none;
+            background: rgba(0, 255, 0, 0.2);
+            transform: translateX(10px);
         }
     </style>
 </head>
@@ -252,15 +195,15 @@
     <h1>PicadorCraft</h1>
     <div id="keyDisplay"></div>
     <div id="container">
-        <iframe id="gameFrame" src="eagler.html" allow="keyboard" loading="lazy"></iframe>
+        <iframe id="gameFrame" src="eagler.html" allow="keyboard" loading="eager"></iframe>
     </div>
     <div id="shortcuts">
         <h2>Kısayollar</h2>
         <p><strong>Ctrl + F</strong> - Tam Ekran Modu</p>
         <p><strong>Ctrl + R</strong> - Oyunu Yeniden Yükle</p>
         <p><strong>Ctrl + M</strong> - Ses Aç/Kapat</p>
-        <p><strong>Ctrl + Q</strong> - Hızlı Çıkış</p>
-        <p><strong>Shift + K</strong> - Performans Modu Aç/Kapat</p>
+        <p><strong>Ctrl + Q</strong> - Çıkış</p>
+        <p><strong>Shift + K</strong> - Performans Modu</p>
     </div>
 
     <script>
@@ -275,14 +218,13 @@
             { color1: "#00ff00", color2: "#ff0000" },
             { color1: "#00ffff", color2: "#ff00ff" },
             { color1: "#0000ff", color2: "#ffff00" },
-            { color1: "#ff8000", color2: "#8000ff" },
         ];
         let currentTheme = 0;
 
         gameFrame.focus();
 
         rgbSwitch.addEventListener("click", changeRGB);
-        fullscreenBtn.addEventListener("click", goFullscreen);
+        fullscreenBtn.addEventListener("click", toggleFullscreen);
 
         function changeRGB() {
             if (!performanceMode) {
@@ -294,60 +236,40 @@
             }
         }
 
-        function goFullscreen() {
-            if (container.requestFullscreen) {
-                container.requestFullscreen();
-                document.addEventListener('fullscreenchange', () => {
-                    if (!document.fullscreenElement) {
-                        container.requestFullscreen();
-                    }
-                });
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().then(() => gameFrame.focus()).catch(err => console.error(err));
+            } else {
+                document.exitFullscreen().then(() => gameFrame.focus()).catch(err => console.error(err));
             }
-            gameFrame.focus();
         }
 
         document.addEventListener("keydown", function(event) {
             if (event.ctrlKey || event.shiftKey) {
                 event.preventDefault();
                 const keyCombo = (event.ctrlKey ? "Ctrl+" : "Shift+") + event.key.toUpperCase();
-                keyDisplay.innerText = keyCombo;
+                keyDisplay.textContent = keyCombo;
                 keyDisplay.style.display = "block";
-                setTimeout(() => keyDisplay.style.display = "none", 500);
+                setTimeout(() => keyDisplay.style.display = "none", 400);
 
                 if (event.ctrlKey) {
                     switch(event.key.toLowerCase()) {
                         case 'f':
-                            goFullscreen();
+                            toggleFullscreen();
                             break;
                         case 'r':
-                            gameFrame.src = "eagler.html";
+                            gameFrame.src = gameFrame.src;
                             break;
                         case 'm':
-                            gameFrame.contentWindow.postMessage({ 
-                                action: "toggleSound" 
-                            }, "*");
+                            gameFrame.contentWindow.postMessage({ action: "toggleSound" }, "*");
                             break;
                         case 'q':
-                            window.location.reload();
+                            window.close(); // Çoğu tarayıcıda çalışmaz, alternatif olarak reload kullanılabilir
                             break;
                     }
-                }
-                else if (event.shiftKey && event.key.toLowerCase() === 'k') {
+                } else if (event.shiftKey && event.key.toLowerCase() === 'k') {
                     togglePerformanceMode();
                 }
-            }
-            else {
-                const keyEvent = new KeyboardEvent("keydown", {
-                    key: event.key,
-                    code: event.code,
-                    keyCode: event.keyCode,
-                    which: event.which,
-                    ctrlKey: false,
-                    shiftKey: false,
-                    altKey: event.altKey,
-                    bubbles: true
-                });
-                gameFrame.contentWindow.dispatchEvent(keyEvent);
             }
             gameFrame.focus();
         }, true);
@@ -358,34 +280,40 @@
             if (performanceMode) {
                 document.documentElement.style.setProperty('--color1', '#fff');
                 document.documentElement.style.setProperty('--color2', '#fff');
-                rgbSwitch.style.background = '#333';
-                fullscreenBtn.style.background = '#333';
+                rgbSwitch.style.background = '#444';
+                fullscreenBtn.style.background = '#444';
+                gameFrame.contentWindow.postMessage({ action: "setPerformance", renderingQuality: "low", frameRate: 60 }, "*");
             } else {
                 const { color1, color2 } = colorThemes[currentTheme];
                 document.documentElement.style.setProperty('--color1', color1);
                 document.documentElement.style.setProperty('--color2', color2);
                 rgbSwitch.style.background = 'linear-gradient(135deg, #ff00ff, #00ffff)';
                 fullscreenBtn.style.background = `linear-gradient(135deg, ${color1}, ${color1}aa)`;
+                gameFrame.contentWindow.postMessage({ action: "setPerformance", renderingQuality: "medium", frameRate: 30 }, "*");
             }
-            gameFrame.contentWindow.postMessage({
-                action: "setPerformance",
-                renderingQuality: performanceMode ? "low" : "medium"
-            }, "*");
+            gameFrame.focus();
         }
 
         container.addEventListener("click", () => gameFrame.focus());
 
         gameFrame.addEventListener("load", () => {
             gameFrame.focus();
-            gameFrame.contentWindow.postMessage({
-                action: "setPerformance",
-                renderingQuality: "medium"
-            }, "*");
+            gameFrame.contentWindow.postMessage({ action: "setPerformance", renderingQuality: "medium", frameRate: 30 }, "*");
         });
 
         document.addEventListener("fullscreenchange", () => {
-            fullscreenBtn.innerText = document.fullscreenElement ? "Tam Ekrandan Çık" : "Tam Ekran";
+            fullscreenBtn.textContent = document.fullscreenElement ? "Çıkış" : "Tam Ekran";
             gameFrame.focus();
+        });
+
+        // Performans optimizasyonu için debounce ekleme
+        let resizeTimeout;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                gameFrame.style.width = "100%";
+                gameFrame.style.height = "100%";
+            }, 100);
         });
     </script>
 </body>
