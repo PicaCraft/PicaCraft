@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cookie Clicker</title>
+<style>
+/* reset CSS */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+body {
+    color: #fff;
+    background: #000 url(img/darkNoise.png);
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 13px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+a {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #ccc;
+}
+a:hover {
+    text-shadow: 0px 0px 3px #fff;
+    color: #fff;
+}
+#game {
+    position: absolute;
+    left: 0;
+    top: 32px;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+#cookieAnchor {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+}
+#bigCookie {
+    width: 256px;
+    height: 256px;
+    position: absolute;
+    left: -128px;
+    top: -128px;
+    background: url(img/perfectCookie.png);
+    background-size: 256px 256px;
+    cursor: pointer;
+    z-index: 10000;
+}
+.elderWrath #bigCookie {
+    background: url(img/imperfectCookie.png);
+    background-size: 256px 256px;
+}
+#goldenCookie {
+    width: 96px;
+    height: 96px;
+    background: url(img/goldCookie.png);
+    cursor: pointer;
+    position: absolute;
+    z-index: 10000000000;
+    display: none;
+}
+</style>
+<script src="base64.js"></script>
+<script src="ajax.js"></script>
+<script src="DungeonGen.js"></script>
+<script src="dungeons.js?v=1.5044"></script>
+<script src="main.js?v=1.511"></script>
+</head>
+<body>
+<div id="wrapper">
+    <div id="topBar">
+        <div>
+            <b>Cookie Clicker</b> &copy; <a href="http://orteil.dashnet.org" target="_blank">Orteil</a>, 2013
+        </div>
+    </div>
+    <div id="game">
+        <canvas id="backgroundCanvas"></canvas>
+        <div id="goldenCookie" class="goldenCookie"></div>
+        <div id="cookies" class="title"></div>
+        <div id="cookieAnchor">
+            <div id="bigCookie"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
