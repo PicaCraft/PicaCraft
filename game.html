@@ -5,167 +5,309 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PicadorCraft</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap');
+
+        :root {
+            --bg-dark: #0c0c1a;
+            --neon-cyan: #00eaff;
+            --neon-pink: #ff00cc;
+            --card-bg: rgba(20, 20, 40, 0.85);
+            --text-light: #e0e0ff;
+            --text-dim: #a0a0cc;
+            --glow-cyan: rgba(0, 234, 255, 0.5);
+            --glow-pink: rgba(255, 0, 204, 0.5);
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Exo 2', sans-serif;
         }
 
         body {
-            background: #0a0a0a;
+            background: var(--bg-dark);
+            min-height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            perspective: 1000px;
         }
 
         .background {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ff007a, #00d4ff);
-            opacity: 0.3;
+            inset: 0;
+            background: radial-gradient(circle at center, #1a1a3a 0%, var(--bg-dark) 70%);
             z-index: -1;
+            animation: pulseBG 10s infinite;
         }
 
-        .container {
-            background: rgba(20, 20, 20, 0.95);
-            padding: 40px 30px;
-            border-radius: 15px;
-            text-align: center;
-            width: 400px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+        @keyframes pulseBG {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .panel {
+            position: relative;
+            width: min(600px, 90vw);
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 25px;
+            box-shadow: 0 0 50px var(--glow-cyan);
+            backdrop-filter: blur(15px);
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(10deg);
+            transition: transform 0.5s ease;
+            animation: floatPanel 6s infinite ease-in-out;
+        }
+
+        body:hover .panel {
+            transform: rotateX(0deg) rotateY(0deg);
+        }
+
+        @keyframes floatPanel {
+            0%, 100% { transform: translateY(0) rotateX(10deg) rotateY(10deg); }
+            50% { transform: translateY(-20px) rotateX(10deg) rotateY(10deg); }
         }
 
         .title {
-            font-size: 36px;
+            font-size: clamp(36px, 8vw, 48px);
             font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 5px #00ffff;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 15px var(--neon-cyan);
+            animation: neonFlicker 4s infinite;
         }
 
-        .game-button {
-            padding: 15px 30px;
-            margin: 15px 0;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
+        @keyframes neonFlicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--neon-cyan); }
+            50% { opacity: 0.95; text-shadow: 0 0 25px var(--neon-cyan); }
+        }
+
+        .game-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
             cursor: pointer;
-            background: #00ffff;
-            border: none;
-            transition: transform 0.2s ease, background 0.2s ease;
-            display: block;
-            width: 100%;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
         }
 
-        .game-button:hover {
-            transform: scale(1.05);
-            background: #ff00ff;
+        .game-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
         }
 
-        .game-button:active {
-            transform: scale(0.95);
+        .game-card:hover::before {
+            opacity: 1;
         }
 
-        .version-text {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
+        .game-card:hover {
+            transform: translateY(-10px) translateZ(20px);
+            box-shadow: 0 15px 30px var(--glow-pink);
+        }
+
+        .game-card:active {
+            transform: scale(0.95) translateZ(0);
+        }
+
+        .game-title {
+            font-size: clamp(18px, 4vw, 20px);
+            font-weight: 700;
+            color: var(--text-light);
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .game-version {
+            font-size: clamp(12px, 3vw, 14px);
+            color: var(--text-dim);
+            margin-top: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .game-card:hover .game-version {
+            color: var(--text-light);
         }
 
         .loading-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
+            inset: 0;
+            background: radial-gradient(circle, #1a1a3a, var(--bg-dark));
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            color: #fff;
-            font-size: 24px;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .loading-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-text {
+            font-size: clamp(28px, 6vw, 32px);
             font-weight: 700;
-            z-index: 1000;
-            display: none;
+            color: var(--text-light);
+            text-shadow: 0 0 20px var(--neon-cyan);
+            animation: flickerText 2s infinite;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.2);
-            border-top: 5px solid #00ffff;
+        @keyframes flickerText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .loading-ring {
+            width: 100px;
+            height: 100px;
+            border: 10px solid transparent;
+            border-top: 10px solid var(--neon-cyan);
+            border-right: 10px solid var(--neon-pink);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-top: 20px;
+            animation: spin 1.5s ease-in-out infinite, glowRing 2s infinite;
+            margin-top: 30px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes glowRing {
+            0%, 100% { box-shadow: 0 0 20px var(--glow-cyan); }
+            50% { box-shadow: 0 0 40px var(--glow-pink); }
         }
 
         .tooltip {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 20px;
+            position: absolute;
+            bottom: 20px;
+            font-size: clamp(12px, 3vw, 14px);
+            color: var(--text-dim);
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 1s ease 0.5s forwards;
+            opacity: 0;
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 30px 20px;
+            }
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="background"></div>
-    <div class="container">
+    <div class="stars" id="stars"></div>
+    <div class="panel">
         <div class="title">PicadorCraft</div>
-        <button class="game-button" onclick="startLoading('oyun.html')">
-            EaglerCraft 1.8.8
-            <div class="version-text">Son Sürüm</div>
-        </button>
-        <button class="game-button" onclick="startLoading('eagler.1.5.2.html')">
-            EaglerCraft 1.5.2
-            <div class="version-text">Klasik Sürüm</div>
-        </button>
-        <button class="game-button" onclick="startLoading('slitherio.html')">
-            Slither.io
-            <div class="version-text">Klasik Oyun</div>
-        </button>
-        <button class="game-button" onclick="startLoading('pacman.html')">
-            Pac-Man
-            <div class="version-text">Klasik Oyun</div>
-        </button>
-        <button class="game-button" onclick="startLoading('cookieclicker.html')">
-            Cookie Clicker
-            <div class="version-text">Bağımlılık Yapan Oyun</div>
-        </button>
-        <div class="tooltip">1.5.2 Sürümü Daha Eskidir.</div>
+        <div class="game-grid">
+            <div class="game-card" data-url="oyun.html" data-key="1">
+                <div class="game-title">EaglerCraft 1.8.8</div>
+                <div class="game-version">Son Sürüm</div>
+            </div>
+            <div class="game-card" data-url="eagler.1.5.2.html" data-key="2">
+                <div class="game-title">EaglerCraft 1.5.2</div>
+                <div class="game-version">Klasik Sürüm</div>
+            </div>
+            <div class="game-card" data-url="slitherio.html" data-key="3">
+                <div class="game-title">Slither.io</div>
+                <div class="game-version">Klasik Oyun</div>
+            </div>
+            <div class="game-card" data-url="pacman.html" data-key="4">
+                <div class="game-title">Pac-Man</div>
+                <div class="game-version">Klasik Oyun</div>
+            </div>
+            <div class="game-card" data-url="cookieclicker.html" data-key="5">
+                <div class="game-title">Cookie Clicker</div>
+                <div class="game-version">Bağımlılık Yapan Oyun</div>
+            </div>
+        </div>
+        <div class="tooltip">1-5 tuşlarıyla hızlı seçim yapabilirsiniz</div>
     </div>
 
     <div class="loading-screen" id="loadingScreen">
-        Yükleniyor...
-        <div class="spinner"></div>
+        <div class="loading-text">Yükleniyor...</div>
+        <div class="loading-ring"></div>
     </div>
 
     <script>
-        function startLoading(url) {
-            document.getElementById('loadingScreen').style.display = 'flex';
-            setTimeout(() => { window.location.href = url; }, 1000);
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            starsContainer.appendChild(star);
         }
 
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "1") startLoading('oyun.html');
-            if (e.key === "2") startLoading('eagler.1.5.2.html');
-            if (e.key === "3") startLoading('slitherio.html');
-            if (e.key === "4") startLoading('pacman.html');
-            if (e.key === "5") startLoading('cookieclicker.html');
+        const cards = document.querySelectorAll('.game-card');
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        function startLoading(url) {
+            loadingScreen.classList.add('active');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1000);
+        }
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const url = card.dataset.url;
+                startLoading(url);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key;
+            const card = document.querySelector(`.game-card[data-key="${key}"]`);
+            if (card) {
+                const url = card.dataset.url;
+                startLoading(url);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            document.body.style.opacity = 1;
         });
     </script>
 </body>
