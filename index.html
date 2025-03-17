@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="PicaCraft Portal">
+    <meta property="og:description" content="PicadorCraft'a erişim için gizli portal">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://picadorcraft.vercel.app">
+
     <title>Portal - PicadorCraft</title>
     <style>
+        :root {
+            --primary-color: #ff00ff;
+            --secondary-color: #00ffff;
+            --error-color: #ff4444;
+            --bg-dark: #0d0d1a;
+            --container-bg: rgba(10, 10, 20, 0.9);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,18 +30,76 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0d0d1a;
+            background: var(--bg-dark);
             font-family: 'Courier New', monospace;
             overflow: hidden;
             position: relative;
         }
 
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            width: 150px;
+            height: 150px;
+            background: url('logo.png') center/contain no-repeat;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            animation: load 3s ease-in-out forwards;
+        }
+
+        .loader-text {
+            color: var(--secondary-color);
+            margin-top: 20px;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes load {
+            0% { width: 0%; }
+            80% { width: 100%; }
+            100% { width: 100%; }
+        }
+
         .particles {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             pointer-events: none;
             z-index: 0;
         }
@@ -36,35 +108,54 @@
             position: absolute;
             width: 8px;
             height: 8px;
-            background: radial-gradient(circle, #ff00ff 30%, #00ffff 70%, transparent);
+            background: radial-gradient(circle, var(--primary-color) 30%, var(--secondary-color) 70%, transparent);
             border-radius: 50%;
             opacity: 0.6;
+            animation: float 15s infinite, fade 3s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(calc(-10vw + 20vw * var(--rand-x)), calc(-20vh + 40vh * var(--rand-y))); }
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.2; }
         }
 
         .login-container {
             position: relative;
             width: 500px;
             padding: 60px;
-            background: rgba(10, 10, 20, 0.9);
-            border: 4px solid #ff00ff;
+            background: var(--container-bg);
+            border: 4px solid var(--primary-color);
             border-radius: 20px;
             box-shadow: 0 0 60px rgba(255, 0, 255, 0.4);
             text-align: center;
             transform: scale(0.95);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             z-index: 1;
+            backdrop-filter: blur(5px);
+            opacity: 0;
         }
 
-        .login-container:hover {
+        .login-container.visible {
+            opacity: 1;
             transform: scale(1);
-            box-shadow: 0 0 80px rgba(255, 0, 255, 0.6);
         }
 
         h1 {
-            color: #00ffff;
+            color: var(--secondary-color);
             font-size: 3.5em;
             margin-bottom: 40px;
-            text-shadow: 0 0 15px #ff00ff;
+            text-shadow: 0 0 15px var(--primary-color);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 15px var(--primary-color); }
+            to { text-shadow: 0 0 25px var(--primary-color); }
         }
 
         .input-box {
@@ -72,26 +163,20 @@
             margin: 30px 0;
         }
 
-        .password-container {
-            position: relative;
-            width: 100%;
-        }
-
         input[type="password"], input[type="text"] {
             width: 100%;
-            padding: 15px;
-            padding-right: 50px; 
+            padding: 15px 50px 15px 15px;
             background: rgba(255, 255, 255, 0.05);
-            border: 3px solid #00ffff;
+            border: 3px solid var(--secondary-color);
             border-radius: 10px;
-            color: #ff00ff;
+            color: var(--primary-color);
             font-size: 1.3em;
             outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        input[type="password"]:focus, input[type="text"]:focus {
-            border-color: #ff00ff;
+        input:focus {
+            border-color: var(--primary-color);
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
         }
 
@@ -100,37 +185,57 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #00ffff;
+            color: var(--secondary-color);
             cursor: pointer;
             font-size: 1.3em;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .eye-icon:hover {
-            color: #ff00ff;
+            color: var(--primary-color);
+            transform: translateY(-50%) scale(1.1);
         }
 
         button {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             border: none;
             border-radius: 10px;
             color: #fff;
             font-size: 1.5em;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        button:hover::after {
+            width: 200%;
+            height: 200%;
         }
 
         button:hover {
-            background: linear-gradient(45deg, #00ffff, #ff00ff);
             transform: translateY(-3px);
             box-shadow: 0 0 30px rgba(255, 0, 255, 0.7);
         }
 
         .error {
-            color: #ff4444;
+            color: var(--error-color);
             margin-top: 15px;
             font-size: 1.2em;
             opacity: 0;
@@ -143,6 +248,14 @@
     </style>
 </head>
 <body>
+    <div class="loader">
+        <div class="loader-logo"></div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+        <div class="loader-text">PicaCraft Yükleniyor...</div>
+    </div>
+
     <div class="particles" id="particles"></div>
     <div class="login-container">
         <h1>PicaCraft Portal</h1>
@@ -157,12 +270,25 @@
     </div>
 
     <script>
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader');
+            const loginContainer = document.querySelector('.login-container');
+            
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                loginContainer.classList.add('visible');
+            }, 3000);
+        });
+
         const particleContainer = document.getElementById('particles');
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 100; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particle.style.left = Math.random() * 100 + 'vw';
             particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.setProperty('--rand-x', Math.random());
+            particle.style.setProperty('--rand-y', Math.random());
+            particle.style.animationDelay = Math.random() * 5 + 's';
             particleContainer.appendChild(particle);
         }
 
@@ -185,21 +311,24 @@
             const loginContainer = document.querySelector('.login-container');
 
             if (password === correctPassword) {
-                loginContainer.style.transition = 'opacity 0.5s ease';
+                loginContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 loginContainer.style.opacity = '0';
+                loginContainer.style.transform = 'scale(0.8)';
                 setTimeout(() => {
                     window.location.href = 'game.html';
                 }, 500);
             } else {
                 errorMsg.classList.add('show');
-                document.getElementById('password').style.borderColor = '#ff4444';
-                loginContainer.style.borderColor = '#ff4444';
+                document.getElementById('password').style.borderColor = 'var(--error-color)';
+                loginContainer.style.borderColor = 'var(--error-color)';
                 loginContainer.style.boxShadow = '0 0 60px rgba(255, 0, 0, 0.5)';
+                loginContainer.style.animation = 'shake 0.5s';
                 setTimeout(() => {
                     errorMsg.classList.remove('show');
-                    document.getElementById('password').style.borderColor = '#00ffff';
-                    loginContainer.style.borderColor = '#ff00ff';
+                    document.getElementById('password').style.borderColor = 'var(--secondary-color)';
+                    loginContainer.style.borderColor = 'var(--primary-color)';
                     loginContainer.style.boxShadow = '0 0 60px rgba(255, 0, 255, 0.4)';
+                    loginContainer.style.animation = 'none';
                 }, 2000);
             }
         }
@@ -209,6 +338,15 @@
                 checkPassword();
             }
         });
+
+        const styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(`
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `, styleSheet.cssRules.length);
     </script>
-</body> 
+</body>
 </html>
