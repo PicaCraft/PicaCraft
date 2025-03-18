@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta property="og:title" content="PicaCraft Portal">
     <meta property="og:description" content="PicadorCraft'a erişim için gizli portal">
-    <meta property="og:image" content="logo.png">
+    <meta property="og:image" content="https://picadorcraft.vercel.app/logo.png"> 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://picadorcraft.vercel.app">
+
+    <!-- Add Favicon for Branding -->
+    <link rel="icon" type="image/png" href="https://picadorcraft.vercel.app/logo.png">
 
     <title>Portal - PicadorCraft</title>
     <style>
@@ -57,7 +61,7 @@
         .loader-logo {
             width: 150px;
             height: 150px;
-            background: url('logo.png') center/contain no-repeat;
+            background: url('https://picadorcraft.vercel.app/logo.png') center/contain no-repeat;
             animation: pulse 1.5s infinite;
         }
 
@@ -143,6 +147,13 @@
         .login-container.visible {
             opacity: 1;
             transform: scale(1);
+        }
+
+        .site-logo {
+            width: 100px;
+            height: 100px;
+            background: url('https://picadorcraft.vercel.app/logo.png') center/contain no-repeat;
+            margin: 0 auto 20px;
         }
 
         h1 {
@@ -258,6 +269,7 @@
 
     <div class="particles" id="particles"></div>
     <div class="login-container">
+        <div class="site-logo"></div> <!-- Added Logo Here -->
         <h1>PicaCraft Portal</h1>
         <div class="input-box">
             <div class="password-container">
