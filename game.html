@@ -12,12 +12,14 @@
             --neon-cyan: #00eaff;
             --neon-pink: #ff00cc;
             --neon-purple: #9b00ff;
-            --card-bg: rgba(20, 20, 40, 0.9);
+            --neon-green: #00ff9d;
+            --card-bg: rgba(20, 20, 40, 0.95);
             --text-light: #e0e0ff;
             --text-dim: #a0a0cc;
-            --glow-cyan: rgba(0, 234, 255, 0.7);
-            --glow-pink: rgba(255, 0, 204, 0.7);
-            --glow-purple: rgba(155, 0, 255, 0.7);
+            --glow-cyan: rgba(0, 234, 255, 0.8);
+            --glow-pink: rgba(255, 0, 204, 0.8);
+            --glow-purple: rgba(155, 0, 255, 0.8);
+            --glow-green: rgba(0, 255, 157, 0.8);
         }
 
         * {
@@ -34,129 +36,113 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1500px;
+            perspective: 2000px;
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.5s ease;
         }
 
         body.loaded {
             opacity: 1;
         }
 
-        .background {
+        #canvas-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, #1a1a3a 0%, var(--bg-dark) 70%);
-            z-index: -2;
-            animation: pulseBG 8s infinite ease-in-out;
-        }
-
-        @keyframes pulseBG {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 0.6; }
+            z-index: -3;
         }
 
         .stars {
             position: absolute;
             inset: 0;
             pointer-events: none;
-            transform: translateZ(-100px);
+            transform: translateZ(-200px);
         }
 
         .star {
             position: absolute;
             background: var(--text-light);
             border-radius: 50%;
-            animation: twinkle 4s infinite ease-in-out;
-            box-shadow: 0 0 5px var(--glow-cyan);
-        }
-
-        .star--small { width: 2px; height: 2px; }
-        .star--medium { width: 3px; height: 3px; }
-        .star--large { width: 4px; height: 4px; }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
+            animation: twinkle 5s infinite ease-in-out;
+            box-shadow: 0 0 8px var(--glow-cyan);
         }
 
         .panel {
             position: relative;
-            width: min(700px, 95vw);
-            padding: 50px;
+            width: min(800px, 95vw);
+            padding: 60px;
             background: var(--card-bg);
-            border-radius: 30px;
-            box-shadow: 0 0 60px var(--glow-cyan), 0 0 120px var(--glow-pink);
-            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            box-shadow: 0 0 80px var(--glow-cyan), 0 0 160px var(--glow-pink);
+            backdrop-filter: blur(25px);
             transform-style: preserve-3d;
-            animation: floatPanel 5s infinite ease-in-out;
-            border: 2px solid var(--neon-cyan);
+            animation: floatPanel 4s infinite ease-in-out;
+            border: 3px solid var(--neon-green);
         }
 
         @keyframes floatPanel {
-            0%, 100% { transform: translateY(0) rotateX(8deg) rotateY(8deg) translateZ(50px); }
-            50% { transform: translateY(-30px) rotateX(8deg) rotateY(8deg) translateZ(50px); }
+            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(5deg) translateZ(100px); }
+            50% { transform: translateY(-40px) rotateX(5deg) rotateY(5deg) translateZ(100px); }
         }
 
         .title {
-            font-size: clamp(40px, 9vw, 56px);
+            font-size: clamp(48px, 10vw, 64px);
             font-weight: 700;
             color: var(--text-light);
             text-align: center;
-            margin-bottom: 50px;
-            text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-pink);
-            animation: neonFlicker 3s infinite ease-in-out;
+            margin-bottom: 60px;
+            text-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-pink);
+            animation: neonFlicker 2.5s infinite ease-in-out;
             position: relative;
         }
 
         .title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green), var(--neon-pink));
             transform: translateX(-50%);
-            animation: pulseLine 2s infinite;
+            animation: pulseLine 1.5s infinite;
         }
 
         @keyframes pulseLine {
-            0%, 100% { width: 100px; }
-            50% { width: 150px; }
+            0%, 100% { width: 150px; opacity: 0.8; }
+            50% { width: 200px; opacity: 1; }
         }
 
         @keyframes neonFlicker {
-            0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-pink); }
-            50% { opacity: 0.97; text-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-pink); }
+            0%, 100% { opacity: 1; text-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-pink); }
+            50% { opacity: 0.95; text-shadow: 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-pink); }
         }
 
         .game-grid {
             display: grid;
-            gap: 25px;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
 
         .game-card {
             background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
-            padding: 25px;
-            border-radius: 20px;
+            padding: 30px;
+            border-radius: 25px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative;
             overflow: hidden;
-            transform: translateZ(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateZ(30px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .game-card::before {
             content: '';
             position: absolute;
             inset: -100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: skewX(-25deg);
-            transition: all 0.6s ease;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-30deg);
+            transition: all 0.7s ease;
             z-index: 1;
         }
 
@@ -166,42 +152,42 @@
         }
 
         .game-card:hover {
-            transform: translateY(-15px) translateZ(40px) scale(1.05);
-            box-shadow: 0 20px 40px var(--glow-purple), 0 0 60px var(--glow-cyan);
+            transform: translateY(-20px) translateZ(60px) scale(1.1);
+            box-shadow: 0 30px 50px var(--glow-purple), 0 0 80px var(--glow-green);
         }
 
         .game-card:active {
-            transform: scale(0.98) translateZ(0);
+            transform: scale(0.95) translateZ(0);
         }
 
         .game-title {
-            font-size: clamp(20px, 4.5vw, 24px);
+            font-size: clamp(24px, 5vw, 28px);
             font-weight: 700;
             color: var(--text-light);
-            text-shadow: 0 0 15px var(--neon-purple);
-            transition: all 0.3s ease;
+            text-shadow: 0 0 20px var(--neon-purple);
+            transition: all 0.4s ease;
         }
 
         .game-version {
-            font-size: clamp(14px, 3.5vw, 16px);
+            font-size: clamp(16px, 4vw, 18px);
             color: var(--text-dim);
-            margin-top: 10px;
-            transition: all 0.3s ease;
+            margin-top: 12px;
+            transition: all 0.4s ease;
         }
 
         .game-card:hover .game-title {
-            text-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--neon-cyan);
+            text-shadow: 0 0 30px var(--neon-pink), 0 0 50px var(--neon-cyan);
         }
 
         .game-card:hover .game-version {
             color: var(--text-light);
-            text-shadow: 0 0 10px var(--glow-cyan);
+            text-shadow: 0 0 15px var(--glow-green);
         }
 
         .loading-screen {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle, rgba(26, 26, 58, 0.95), var(--bg-dark));
+            background: radial-gradient(circle, rgba(26, 26, 58, 0.98), var(--bg-dark));
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -209,8 +195,8 @@
             z-index: 2000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.8s ease;
-            backdrop-filter: blur(10px);
+            transition: opacity 1s ease;
+            backdrop-filter: blur(15px);
         }
 
         .loading-screen.active {
@@ -219,56 +205,44 @@
         }
 
         .loading-text {
-            font-size: clamp(32px, 7vw, 40px);
+            font-size: clamp(36px, 8vw, 48px);
             font-weight: 700;
             color: var(--text-light);
-            text-shadow: 0 0 25px var(--neon-cyan), 0 0 50px var(--neon-pink);
-            animation: flickerText 1.5s infinite ease-in-out;
-            transform: translateZ(30px);
+            text-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-pink);
+            animation: flickerText 1s infinite ease-in-out;
+            transform: translateZ(50px);
         }
 
         @keyframes flickerText {
-            0%, 100% { opacity: 1; transform: translateY(0); }
-            50% { opacity: 0.85; transform: translateY(-5px); }
+            0%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+            50% { opacity: 0.9; transform: translateY(-10px) scale(1.05); }
         }
 
         .loading-container {
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin-top: 40px;
-            transform: translateZ(40px);
+            width: 150px;
+            height: 150px;
+            margin-top: 50px;
+            transform: translateZ(60px);
         }
 
         .loading-ring {
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 12px solid transparent;
+            border: 15px solid transparent;
             border-radius: 50%;
-            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
         }
 
-        .ring-1 {
-            border-top: 12px solid var(--neon-cyan);
-            animation-delay: 0s;
-        }
-
-        .ring-2 {
-            border-right: 12px solid var(--neon-pink);
-            animation-delay: 0.2s;
-            transform: scale(0.85);
-        }
-
-        .ring-3 {
-            border-bottom: 12px solid var(--neon-purple);
-            animation-delay: 0.4s;
-            transform: scale(0.7);
-        }
+        .ring-1 { border-top: 15px solid var(--neon-cyan); animation-delay: 0s; }
+        .ring-2 { border-right: 15px solid var(--neon-pink); animation-delay: 0.3s; transform: scale(0.8); }
+        .ring-3 { border-bottom: 15px solid var(--neon-purple); animation-delay: 0.6s; transform: scale(0.6); }
+        .ring-4 { border-left: 15px solid var(--neon-green); animation-delay: 0.9s; transform: scale(0.4); }
 
         @keyframes spin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(1.15); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
@@ -280,51 +254,115 @@
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-cyan);
+            width: 6px;
+            height: 6px;
+            background: var(--neon-green);
             border-radius: 50%;
-            animation: particleBurst 2s infinite ease-in-out;
+            animation: particleBurst 2.5s infinite ease-in-out;
         }
 
         @keyframes particleBurst {
             0% { transform: translate(0, 0) scale(0); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(1.5); opacity: 0; }
+            100% { transform: translate(var(--x), var(--y)) scale(2); opacity: 0; }
+        }
+
+        .admin-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 20px var(--glow-cyan);
+            animation: pulseAdmin 2s infinite;
+        }
+
+        @keyframes pulseAdmin {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .admin-panel {
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            width: 300px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 0 40px var(--glow-purple);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(15px);
+            transform: translateZ(70px);
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-panel input, .admin-panel button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .admin-panel button {
+            background: var(--neon-green);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-panel button:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 20px var(--glow-pink);
         }
 
         .tooltip {
             position: absolute;
-            bottom: 25px;
-            font-size: clamp(14px, 3.5vw, 16px);
+            bottom: 30px;
+            font-size: clamp(16px, 4vw, 18px);
             color: var(--text-dim);
             text-align: center;
             width: 100%;
-            animation: fadeIn 1.5s ease 0.8s forwards;
+            animation: fadeIn 2s ease 1s forwards;
             opacity: 0;
-            text-shadow: 0 0 10px var(--glow-cyan);
+            text-shadow: 0 0 15px var(--glow-green);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 480px) {
             .panel {
-                padding: 40px 25px;
+                padding: 50px 30px;
             }
             .game-grid {
                 grid-template-columns: 1fr;
             }
             .loading-container {
-                width: 100px;
-                height: 100px;
+                width: 120px;
+                height: 120px;
+            }
+            .admin-panel {
+                width: 90vw;
+                left: 5vw;
             }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
+    <canvas id="canvas-bg"></canvas>
     <div class="stars" id="stars"></div>
     <div class="panel">
         <div class="title">PicadorCraft</div>
@@ -359,37 +397,109 @@
             <div class="loading-ring ring-1"></div>
             <div class="loading-ring ring-2"></div>
             <div class="loading-ring ring-3"></div>
+            <div class="loading-ring ring-4"></div>
             <div class="loading-particles" id="particles"></div>
         </div>
     </div>
 
+    <div class="admin-icon" id="adminIcon"></div>
+    <div class="admin-panel" id="adminPanel">
+        <input type="password" id="adminPassword" placeholder="Şifre giriniz">
+        <input type="color" id="neonCyan" value="#00eaff" style="display: none;">
+        <input type="color" id="neonPink" value="#ff00cc" style="display: none;">
+        <input type="range" id="animSpeed" min="0.5" max="3" step="0.1" value="1" style="display: none;">
+        <button id="adminSubmit">Giriş Yap / Kaydet</button>
+    </div>
+
     <script>
-        // Enhanced star generation
+        // Canvas Background
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 234, 255, 0.5)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 50; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                for (let j = i; j < particlesArray.length; j++) {
+                    const dx = particlesArray[i].x - particlesArray[j].x;
+                    const dy = particlesArray[i].y - particlesArray[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 234, 255, ${1 - distance / 100})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+
+        initParticles();
+        animateCanvas();
+
+        // Stars
         const starsContainer = document.getElementById('stars');
-        const starSizes = ['small', 'medium', 'large'];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 200; i++) {
             const star = document.createElement('div');
-            star.classList.add('star', `star--${starSizes[Math.floor(Math.random() * 3)]}`);
+            star.classList.add('star');
+            star.style.width = `${Math.random() * 3 + 1}px`;
+            star.style.height = star.style.width;
             star.style.left = `${Math.random() * 100}vw`;
             star.style.top = `${Math.random() * 100}vh`;
-            star.style.animationDelay = `${Math.random() * 4}s`;
-            star.style.animationDuration = `${2 + Math.random() * 3}s`;
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            star.style.animationDuration = `${3 + Math.random() * 3}s`;
             starsContainer.appendChild(star);
         }
 
-        // Particle generation for loading
+        // Loading Particles
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 20; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 60 + 40;
+            const distance = Math.random() * 80 + 50;
             particle.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
             particle.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-            particle.style.animationDelay = `${i * 0.15}s`;
+            particle.style.animationDelay = `${i * 0.1}s`;
             particlesContainer.appendChild(particle);
         }
 
+        // Game Cards
         const cards = document.querySelectorAll('.game-card');
         const loadingScreen = document.getElementById('loadingScreen');
 
@@ -398,7 +508,7 @@
             document.body.style.overflow = 'hidden';
             setTimeout(() => {
                 window.location.href = url;
-            }, 2000); // Increased duration for better animation visibility
+            }, 2500);
         }
 
         cards.forEach(card => {
@@ -407,20 +517,19 @@
                 startLoading(url);
             });
 
-            // Add tilt effect
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 15;
-                const rotateY = (centerX - x) / 15;
-                card.style.transform = `translateZ(40px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                card.style.transform = `translateZ(60px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
 
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateZ(20px)';
+                card.style.transform = 'translateZ(30px)';
             });
         });
 
@@ -435,7 +544,63 @@
 
         window.addEventListener('load', () => {
             document.body.classList.add('loaded');
+            applySettings();
         });
+
+        // Admin Panel
+        const adminIcon = document.getElementById('adminIcon');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminPassword = document.getElementById('adminPassword');
+        const adminSubmit = document.getElementById('adminSubmit');
+        const neonCyan = document.getElementById('neonCyan');
+        const neonPink = document.getElementById('neonPink');
+        const animSpeed = document.getElementById('animSpeed');
+        let isAdmin = false;
+
+        adminIcon.addEventListener('click', () => {
+            adminPanel.classList.toggle('active');
+        });
+
+        adminSubmit.addEventListener('click', () => {
+            if (!isAdmin && adminPassword.value === 'Ali65proo') {
+                isAdmin = true;
+                adminPassword.style.display = 'none';
+                neonCyan.style.display = 'block';
+                neonPink.style.display = 'block';
+                animSpeed.style.display = 'block';
+                adminSubmit.textContent = 'Ayarları Kaydet';
+            } else if (isAdmin) {
+                const settings = {
+                    neonCyan: neonCyan.value,
+                    neonPink: neonPink.value,
+                    animSpeed: animSpeed.value
+                };
+                localStorage.setItem('siteSettings', JSON.stringify(settings));
+                applySettings();
+            }
+        });
+
+        function applySettings() {
+            const settings = JSON.parse(localStorage.getItem('siteSettings')) || {};
+            if (settings.neonCyan) {
+                document.documentElement.style.setProperty('--neon-cyan', settings.neonCyan);
+                document.documentElement.style.setProperty('--glow-cyan', `${settings.neonCyan}80`);
+            }
+            if (settings.neonPink) {
+                document.documentElement.style.setProperty('--neon-pink', settings.neonPink);
+                document.documentElement.style.setProperty('--glow-pink', `${settings.neonPink}80`);
+            }
+            if (settings.animSpeed) {
+                document.documentElement.style.setProperty('--anim-speed', settings.animSpeed);
+                document.styleSheets[0].cssRules.forEach(rule => {
+                    if (rule.style && rule.style.animation) {
+                        const anim = rule.style.animation.split(' ');
+                        anim[1] = `${parseFloat(anim[1]) * (1 / settings.animSpeed)}s`;
+                        rule.style.animation = anim.join(' ');
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>
