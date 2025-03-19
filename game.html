@@ -34,13 +34,14 @@
         body {
             background: var(--bg-dark);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-y: auto; /* Aşağı kaydırma aktif */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Üstten başlasın */
             perspective: 3000px;
             opacity: 0;
             transition: opacity 2s ease;
+            padding: 20px; /* Kenar boşluğu */
         }
 
         body.loaded {
@@ -48,13 +49,13 @@
         }
 
         #canvas-bg {
-            position: absolute;
+            position: fixed;
             inset: 0;
             z-index: -4;
         }
 
         .stars {
-            position: absolute;
+            position: fixed;
             inset: 0;
             pointer-events: none;
             transform: translateZ(-300px);
@@ -70,7 +71,8 @@
 
         .panel {
             position: relative;
-            width: min(900px, 90vw);
+            width: min(900px, 100%); /* Tam genişlik içinde kalsın */
+            max-width: 900px; /* Maksimum genişlik */
             padding: 80px;
             background: var(--card-bg);
             border-radius: 50px;
@@ -80,6 +82,7 @@
             transform: translateZ(-500px) scale(0.8);
             animation: floatPanel 5s infinite ease-in-out;
             border: 4px solid var(--neon-orange);
+            margin: 50px auto; /* Ortalanmış ve üstten boşluk */
         }
 
         @keyframes floatPanel {
@@ -124,6 +127,10 @@
             display: grid;
             gap: 40px;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            width: 100%; /* Kutular taşmasın */
+            max-width: 100%; /* Sınırlandır */
+            padding: 0 20px; /* Kenar boşluğu */
+            box-sizing: border-box;
         }
 
         .game-card {
@@ -137,6 +144,8 @@
             overflow: hidden;
             transform: translateZ(50px);
             border: 3px solid rgba(255, 255, 255, 0.4);
+            width: 100%; /* Tam genişlik */
+            box-sizing: border-box;
         }
 
         .game-card::before {
@@ -303,6 +312,8 @@
             background: var(--card-bg);
             border-radius: 30px;
             box-shadow: 0 0 60px var(--glow-orange);
+            max-height: 80vh; /* Panel kaydırılabilir */
+            overflow-y: auto;
         }
 
         .admin-content h2 {
@@ -340,8 +351,8 @@
         }
 
         .tooltip {
-            position: absolute;
-            bottom: 40px;
+            position: relative; /* Absolute yerine relative */
+            margin-top: 40px;
             font-size: clamp(18px, 5vw, 20px);
             color: var(--text-dim);
             text-align: center;
@@ -356,12 +367,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             .panel {
-                padding: 60px 40px;
+                padding: 40px 20px;
+                width: 100%;
             }
             .game-grid {
                 grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+            .game-card {
+                padding: 30px;
             }
             .loading-container {
                 width: 150px;
@@ -369,6 +385,12 @@
             }
             .admin-content {
                 padding: 20px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .game-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
         }
     </style>
@@ -701,6 +723,12 @@
                 document.querySelector('.panel').style.transform = `translateZ(${settings.panelDepth}px) scale(0.8)`;
             }
         }
+
+       
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
